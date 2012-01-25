@@ -113,6 +113,20 @@
    <enemy>Pirate</enemy>
    <enemy>Collective</enemy>
   </enemies>
+  <subfactions>
+   <sub name="Empire Police">
+    <type>police</type>
+   </sub>
+   <sub name="Emperial Military Force">
+    <type>military</type>
+   </sub>
+   <sub name="Emperial Citizen">
+    <type>civilian</type>
+   </sub>
+   <sub name="Empire Shipping">
+    <type>trader</type>
+   </sub>
+  </subfactions>
  </faction>
  <faction name="Soromid">
   <known/>
