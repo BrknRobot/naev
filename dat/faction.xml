@@ -102,9 +102,7 @@
   <logo>empire</logo>
   <colour>green</colour>
   <player>1</player>
-  <spawn>empire</spawn>
   <standing>empire</standing>
-  <equip>empire</equip>
   <allies>
    <ally>Dvaered</ally>
    <ally>Goddard</ally>
@@ -113,20 +111,22 @@
    <enemy>Pirate</enemy>
    <enemy>Collective</enemy>
   </enemies>
-  <subfactions>
-   <sub name="Empire Police">
-    <type>police</type>
-   </sub>
-   <sub name="Emperial Military Force">
-    <type>military</type>
-   </sub>
-   <sub name="Emperial Citizen">
-    <type>civilian</type>
-   </sub>
-   <sub name="Empire Shipping">
-    <type>trader</type>
-   </sub>
-  </subfactions>
+  <sub name="Empire Police">
+   <spawn>empire/empire_police</spawn>
+   <equip>empire/empire_police</equip>
+  </sub>
+  <sub name="Emperial Military Force">
+   <spawn>empire/empire_military</spawn>
+   <equip>empire/empire_military</equip>
+  </sub>
+  <sub name="Emperial Citizen">
+   <spawn>empire/empire_civilian</spawn>
+   <equip>empire/empire_civilian</equip>
+  </sub>
+  <sub name="Empire Shipping">
+   <spawn>empire/empire_trader</spawn>
+   <equip>empire/empire_trader</equip>
+  </sub>
  </faction>
  <faction name="Soromid">
   <known/>

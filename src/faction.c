@@ -66,6 +66,10 @@ typedef struct Faction_ {
    glTexture *logo_tiny; /**< Tiny logo. */
    const glColour *colour; /**< Faction specific colour. */
 
+   /* Subfactions */
+   int *subfactions; /**< Subfactions by ID of the faction. */
+   int nsubfactions; /**< Number of subfactions */
+
    /* Enemies */
    int *enemies; /**< Enemies by ID of the faction. */
    int nenemies; /**< Number of enemies. */
@@ -74,27 +78,37 @@ typedef struct Faction_ {
    int *allies; /**< Allies by ID of the faction. */
    int nallies; /**< Number of allies. */
 
-   /* Player information. */
-   double player_def; /**< Default player standing. */
-   double player; /**< Standing with player - from -100 to 100 */
-
-   /* Scheduler. */
-   lua_State *sched_state; /**< Lua scheduler script. */
-
    /* Behaviour. */
    lua_State *state; /**< Faction specific state. */
 
-   /* Equipping. */
-   lua_State *equip_state; /**< Faction equipper state. */
-
+   /* Player information. */
+   double player_def; /**< Default player standing. */
+   double player; /**< Standing with player - from -100 to 100 */
 
    /* Flags. */
    unsigned int flags; /**< Flags affecting the faction. */
 } Faction;
 
+typedef struct Subfaction_ {
+   char *name; /**< Subfaction's name. */
+
+   Faction *parent; /**< The subfactions parent */
+
+   /* Scheduler. */
+   lua_State *sched_state; /**< Lua scheduler script. */
+
+   /* Equipping. */
+   lua_State *equip_state; /**< Faction equipper state. */
+
+   /* Flags. */
+   unsigned int flags; /**< Flags affecting the subfaction. */
+} Subfaction;
+
+static Subfaction* subfaction_stack = NULL; /**< Subaction stack. */
+int subfaction_nstack = 0; /**< Number of subfactions in the subfaction stack. */
+
 static Faction* faction_stack = NULL; /**< Faction stack. */
 int faction_nstack = 0; /**< Number of factions in the faction stack. */
-
 
 /*
  * Prototypes
@@ -370,7 +384,7 @@ lua_State *faction_getScheduler( int f )
       return NULL;
    }
 
-   return faction_stack[f].sched_state;
+   return subfaction_stack[f].sched_state;
 }
 
 
@@ -384,7 +398,7 @@ lua_State *faction_getEquipper( int f )
       return NULL;
    }
 
-   return faction_stack[f].equip_state;
+   return subfaction_stack[f].equip_state;
 }
 
 
@@ -407,23 +421,23 @@ static void faction_sanitizePlayer( Faction* faction )
  */
 static void faction_modPlayerLua( int f, double mod, const char *source, int secondary )
 {
-   Faction *faction;
+   Subfaction *faction;
    lua_State *L;
    int errf;
    double old, delta;
    HookParam hparam[3];
 
-   faction = &faction_stack[f];
+   faction = &subfaction_stack[f];
 
    /* Make sure it's not static. */
    if (faction_isFlag(faction, FACTION_STATIC))
       return;
 
-   L     = faction->state;
-   old   = faction->player;
+   L     = faction->parent->state;
+   old   = faction->parent->player;
 
    if (L == NULL)
-      faction->player += mod;
+      faction->parent->player += mod;
    else {
 #if DEBUGGING
       lua_pushcfunction(L, nlua_errTrace);
@@ -435,7 +449,7 @@ static void faction_modPlayerLua( int f, double mod, const char *source, int sec
       /* Set up the function:
        * faction_hit( current, amount, source, secondary ) */
       lua_getglobal(   L, "faction_hit" );
-      lua_pushnumber(  L, faction->player );
+      lua_pushnumber(  L, faction->parent->player );
       lua_pushnumber(  L, mod );
       lua_pushstring(  L, source );
       lua_pushboolean( L, secondary );
@@ -455,7 +469,7 @@ static void faction_modPlayerLua( int f, double mod, const char *source, int sec
       if (!lua_isnumber( L, -1 ))
          WARN( "Lua script for faction '%s' did not return a number from 'faction_hit(...)'.", faction->name );
       else
-         faction->player = lua_tonumber( L, -1 );
+         faction->parent->player = lua_tonumber( L, -1 );
 #if DEBUGGING
       lua_pop( L, 2 );
 #else /* DEBUGGING */
@@ -464,10 +478,10 @@ static void faction_modPlayerLua( int f, double mod, const char *source, int sec
    }
 
    /* Sanitize just in case. */
-   faction_sanitizePlayer( faction );
+   faction_sanitizePlayer( faction->parent );
 
    /* Run hook if necessary. */
-   delta = faction->player - old;
+   delta = faction->parent->player - old;
    if (fabs(delta) > 1e-10) {
       hparam[0].type    = HOOK_PARAM_FACTION;
       hparam[0].u.lf.f  = f;
@@ -796,48 +810,24 @@ int faction_isFaction( int f )
    return 1;
 }
 
-
-/**
- * @brief Parses a single faction, but doesn't set the allies/enemies bit.
- *
- *    @param temp Faction to load data into.
- *    @param parent Parent node to extract faction from.
- *    @return Faction created from parent node.
- */
-static int faction_parse( Faction* temp, xmlNodePtr parent )
+static int faction_parseSub( Subfaction* temp, xmlNodePtr parent )
 {
    xmlNodePtr node;
-   int player;
    char buf[PATH_MAX], *dat;
    uint32_t ndat;
 
    /* Clear memory. */
-   memset( temp, 0, sizeof(Faction) );
+   memset( temp, 0, sizeof(Subfaction) );
 
    temp->name = xml_nodeProp(parent,"name");
    if (temp->name == NULL)
-      WARN("Faction from "FACTION_DATA" has invalid or no name");
+      WARN("Subfaction from "FACTION_DATA" has invalid or no name");
 
-   player = 0;
    node = parent->xmlChildrenNode;
    do {
 
       /* Only care about nodes. */
       xml_onlyNodes(node);
-
-      /* Can be 0 or negative, so we have to take that into account. */
-      if (xml_isNode(node,"player")) {
-         temp->player_def = xml_getFloat(node);
-         player = 1;
-         continue;
-      }
-
-      xmlr_strd(node,"longname",temp->longname);
-      xmlr_strd(node,"display",temp->displayname);
-      if (xml_isNode(node, "colour")) {
-         temp->colour = col_fromName(xml_raw(node));
-         continue;
-      }
 
       if (xml_isNode(node, "spawn")) {
          if (temp->sched_state != NULL)
@@ -853,25 +843,6 @@ static int faction_parse( Faction* temp, xmlNodePtr parent )
                   buf, lua_tostring(temp->sched_state,-1));
             lua_close( temp->sched_state );
             temp->sched_state = NULL;
-         }
-         free(dat);
-         continue;
-      }
-
-      if (xml_isNode(node, "standing")) {
-         if (temp->state != NULL)
-            WARN("Faction '%s' has duplicate 'standing' tag.", temp->name);
-         snprintf( buf, sizeof(buf), "dat/factions/standing/%s.lua", xml_raw(node) );
-         temp->state = nlua_newState();
-         nlua_loadStandard( temp->state, 0 );
-         dat = ndata_read( buf, &ndat );
-         if (luaL_dobuffer(temp->state, dat, ndat, buf) != 0) {
-            WARN("Failed to run standing script: %s\n"
-                  "%s\n"
-                  "Most likely Lua file has improper syntax, please check",
-                  buf, lua_tostring(temp->state,-1));
-            lua_close( temp->state );
-            temp->state = NULL;
          }
          free(dat);
          continue;
@@ -901,6 +872,71 @@ static int faction_parse( Faction* temp, xmlNodePtr parent )
          continue;
       }
 
+      if (xml_isNode(node,"static")) {
+         faction_setFlag(temp, FACTION_STATIC);
+         continue;
+      }
+
+      if (xml_isNode(node,"invisible")) {
+         faction_setFlag(temp, FACTION_INVISIBLE);
+         continue;
+      }
+
+      DEBUG("Unknown node '%s' in faction '%s'",node->name,temp->name);
+   } while (xml_nextNode(node));
+
+   return 0;
+}
+
+/**
+ * @brief Parses a single faction, but doesn't set the allies/enemies bit.
+ *
+ *    @param temp Faction to load data into.
+ *    @param parent Parent node to extract faction from.
+ *    @return Faction created from parent node.
+ */
+static int faction_parse( Faction* temp, xmlNodePtr parent )
+{
+   xmlNodePtr node;
+   int player;
+   char buf[PATH_MAX], *dat;
+   int mem;
+   uint32_t ndat;
+
+   /* Clear memory. */
+   memset( temp, 0, sizeof(Faction) );
+   mem = 0;
+
+   temp->name = xml_nodeProp(parent,"name");
+   if (temp->name == NULL)
+      WARN("Faction from "FACTION_DATA" has invalid or no name");
+
+   player = 0;
+   node = parent->xmlChildrenNode;
+   do {
+
+      /* Only care about nodes. */
+      xml_onlyNodes(node);
+
+      /* Can be 0 or negative, so we have to take that into account. */
+      if (xml_isNode(node,"player")) {
+         temp->player_def = xml_getFloat(node);
+         player = 1;
+         continue;
+      }
+
+      xmlr_strd(node,"longname",temp->longname);
+      xmlr_strd(node,"display",temp->displayname);
+      if (xml_isNode(node, "colour")) {
+         temp->colour = col_fromName(xml_raw(node));
+         continue;
+      }
+
+      if (xml_isNode(node, "known")) {
+         faction_setFlag(temp, FACTION_KNOWN);
+         continue;
+      }
+
       if (xml_isNode(node,"logo")) {
          if (temp->logo_small != NULL)
             WARN("Faction '%s' has duplicate 'logo' tag.", temp->name);
@@ -918,6 +954,38 @@ static int faction_parse( Faction* temp, xmlNodePtr parent )
 
       if (xml_isNode(node,"invisible")) {
          faction_setFlag(temp, FACTION_INVISIBLE);
+         continue;
+      }
+
+      if (xml_isNode(node, "standing")) {
+         if (temp->state != NULL)
+            WARN("Faction '%s' has duplicate 'standing' tag.", temp->name);
+         snprintf( buf, sizeof(buf), "dat/factions/standing/%s.lua", xml_raw(node) );
+         temp->state = nlua_newState();
+         nlua_loadStandard( temp->state, 0 );
+         dat = ndata_read( buf, &ndat );
+         if (luaL_dobuffer(temp->state, dat, ndat, buf) != 0) {
+            WARN("Failed to run standing script: %s\n"
+                  "%s\n"
+                  "Most likely Lua file has improper syntax, please check",
+                  buf, lua_tostring(temp->state,-1));
+            lua_close( temp->state );
+            temp->state = NULL;
+         }
+         free(dat);
+         continue;
+      }
+
+      if (xml_isNode(node,"sub")) {
+         /* See if must grow memory.  */
+         subfaction_nstack++;
+         if (subfaction_nstack > mem) {
+            mem += CHUNK_SIZE;
+            subfaction_stack = realloc(subfaction_stack, sizeof(Subfaction)*mem);
+         }
+
+         /* Load faction. */
+         faction_parseSub(&subfaction_stack[subfaction_nstack-1], node);
          continue;
       }
 
@@ -1142,12 +1210,19 @@ void factions_free (void)
          free(faction_stack[i].allies);
       if (faction_stack[i].nenemies > 0)
          free(faction_stack[i].enemies);
-      if (faction_stack[i].sched_state != NULL)
-         lua_close( faction_stack[i].sched_state );
       if (faction_stack[i].state != NULL)
          lua_close( faction_stack[i].state );
    }
    free(faction_stack);
+   faction_stack = NULL;
+   faction_nstack = 0;
+
+   for (i=0; i<subfaction_nstack; i++) {
+      free(subfaction_stack[i].name);
+      if (subfaction_stack[i].sched_state != NULL)
+         lua_close( subfaction_stack[i].sched_state );
+   }
+   free(subfaction_stack);
    faction_stack = NULL;
    faction_nstack = 0;
 }
