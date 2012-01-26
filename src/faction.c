@@ -191,6 +191,73 @@ int* faction_getKnown( int *n )
 }
 
 /**
+ * @brief Gets a subfaction ID by name.
+ *
+ *    @param name Name of the subfaction to seek.
+ *    @return ID of the subfaction.
+ */
+int subfaction_get( const char* name )
+{
+   int i;
+   if (name != NULL) {
+      for (i=0; i<subfaction_nstack; i++)
+         if (strcmp(subfaction_stack[i].name, name)==0)
+            break;
+
+      if (i != subfaction_nstack)
+         return i;
+   }
+
+   WARN("Subfaction '%s' not found in stack.", name);
+   return -1;
+}
+
+
+/**
+ * @brief Gets all the factions.
+ */
+int* subfaction_getAll( int *n )
+{
+   int i;
+   int *f;
+   int m;
+
+   /* Set up. */
+   f  = malloc( sizeof(int) * subfaction_nstack );
+
+   /* Get IDs. */
+   m = 0;
+   for (i=0; i<subfaction_nstack; i++)
+      if (!faction_isFlag( &subfaction_stack[i], FACTION_INVISIBLE ))
+         f[m++] = i;
+
+   *n = m;
+   return f;
+}
+
+/**
+ * @brief Gets all the known factions.
+ */
+int* subfaction_getKnown( int *n )
+{
+   int i;
+   int *f;
+   int m;
+
+   /* Set up. */
+   f  = malloc( sizeof(int) * subfaction_nstack );
+
+   /* Get IDs. */
+   m = 0;
+   for (i=0; i<subfaction_nstack; i++)
+      if (!faction_isFlag( &subfaction_stack[i], FACTION_INVISIBLE ) && faction_isKnown_( &subfaction_stack[i] ))
+         f[m++] = i;
+
+   *n = m;
+   return f;
+}
+
+/**
  * @brief Clears the known factions.
  */
 void faction_clearKnown()

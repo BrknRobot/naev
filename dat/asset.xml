@@ -26,7 +26,7 @@
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -52,7 +52,7 @@
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -97,7 +97,7 @@
    <exterior>mining6.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -210,7 +210,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -250,7 +250,7 @@
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -433,7 +433,7 @@
    <exterior>aquatic.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -490,7 +490,7 @@
    <exterior>aquatic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -532,7 +532,7 @@
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -625,7 +625,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -667,7 +667,7 @@
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -701,7 +701,7 @@
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -782,7 +782,7 @@
    <exterior>desertic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>75.000000</value>
    <range>1</range>
   </presence>
@@ -848,7 +848,7 @@
    <exterior>aquatic.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -888,7 +888,7 @@
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -1054,7 +1054,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1091,7 +1091,7 @@
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1199,7 +1199,7 @@
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1238,7 +1238,7 @@
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1277,7 +1277,7 @@
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1369,7 +1369,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1462,7 +1462,7 @@
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -1516,7 +1516,7 @@
    <exterior>desertic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1622,7 +1622,7 @@
    <exterior>aquatic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1744,7 +1744,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>50.000000</value>
    <range>3</range>
   </presence>
@@ -1803,7 +1803,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -1901,7 +1901,7 @@
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>0</range>
   </presence>
@@ -1982,7 +1982,7 @@
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -2063,7 +2063,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -2153,7 +2153,7 @@
    <exterior>desertic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2195,7 +2195,7 @@
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2243,7 +2243,7 @@
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2332,7 +2332,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2388,7 +2388,7 @@
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2447,7 +2447,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -2484,7 +2484,7 @@
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>0</range>
   </presence>
@@ -2516,7 +2516,7 @@
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -2652,7 +2652,7 @@
    <exterior>mining2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2695,7 +2695,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>300.000000</value>
    <range>2</range>
   </presence>
@@ -2763,7 +2763,7 @@
    <exterior>station00.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2817,7 +2817,7 @@
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -2906,7 +2906,7 @@
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -2988,7 +2988,7 @@
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3063,7 +3063,7 @@
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3106,7 +3106,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3147,7 +3147,7 @@
    <exterior>mining5.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3272,7 +3272,7 @@
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -3438,7 +3438,7 @@
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3596,7 +3596,7 @@
    <exterior>station00.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3617,7 +3617,7 @@
    <exterior>station00.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -3705,7 +3705,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -3833,7 +3833,7 @@
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -3878,7 +3878,7 @@
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4050,7 +4050,7 @@
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4155,7 +4155,7 @@
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4240,7 +4240,7 @@
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4312,7 +4312,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4369,7 +4369,7 @@
    <exterior>mining5.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4521,7 +4521,7 @@
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4569,7 +4569,7 @@
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4611,7 +4611,7 @@
    <exterior>mining4.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -4676,7 +4676,7 @@
    <exterior>mining2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -4892,7 +4892,7 @@
    <exterior>methane.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -4922,7 +4922,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5012,7 +5012,7 @@
    <exterior>desertic4.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5044,7 +5044,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -5075,7 +5075,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -5106,7 +5106,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -5137,7 +5137,7 @@
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5178,7 +5178,7 @@
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -5284,7 +5284,7 @@
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5326,7 +5326,7 @@
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5366,7 +5366,7 @@
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -5404,7 +5404,7 @@
    <exterior>mining.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5437,7 +5437,7 @@
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -5582,7 +5582,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>methane.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -5798,7 +5798,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>mining6.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -5870,7 +5870,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>mining.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -6047,7 +6047,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6147,7 +6147,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6185,7 +6185,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6242,7 +6242,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6280,7 +6280,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6369,7 +6369,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>1</range>
   </presence>
@@ -6452,7 +6452,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -6499,7 +6499,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -6626,7 +6626,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -6698,7 +6698,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -6731,7 +6731,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>mining4.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>300.000000</value>
    <range>2</range>
   </presence>
@@ -6815,7 +6815,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -6849,7 +6849,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>desertic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -7015,7 +7015,7 @@ Jorlan's inhabitants are mostly part of the ore refining process, as it supplies
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -7102,7 +7102,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>desertic.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -7162,7 +7162,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7236,7 +7236,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>1</range>
   </presence>
@@ -7267,7 +7267,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -7301,7 +7301,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>gas.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7336,7 +7336,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>desertic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -7426,7 +7426,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7533,7 +7533,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>desertic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7566,7 +7566,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>200.000000</value>
    <range>1</range>
   </presence>
@@ -7607,7 +7607,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>aquatic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -7646,7 +7646,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -7700,7 +7700,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7773,7 +7773,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -7968,7 +7968,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>80.000000</value>
    <range>1</range>
   </presence>
@@ -8007,7 +8007,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining6.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8128,7 +8128,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8162,7 +8162,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8298,7 +8298,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>300.000000</value>
    <range>3</range>
   </presence>
@@ -8343,7 +8343,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8386,7 +8386,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Proteron</faction>
+   <faction>Proteron Military</faction>
    <value>300.000000</value>
    <range>0</range>
   </presence>
@@ -8606,7 +8606,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining4.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8647,7 +8647,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining4.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8767,7 +8767,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station02.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8818,7 +8818,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -8863,7 +8863,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -8981,7 +8981,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>80.000000</value>
    <range>1</range>
   </presence>
@@ -9020,7 +9020,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -9158,7 +9158,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -9179,7 +9179,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9200,7 +9200,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9221,7 +9221,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9242,7 +9242,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9263,7 +9263,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>75.000000</value>
    <range>2</range>
   </presence>
@@ -9284,7 +9284,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9305,7 +9305,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9326,7 +9326,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9347,7 +9347,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>30.000000</value>
    <range>2</range>
   </presence>
@@ -9368,7 +9368,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>75.000000</value>
    <range>2</range>
   </presence>
@@ -9389,7 +9389,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9410,7 +9410,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9431,7 +9431,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9452,7 +9452,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station01.png</exterior>
   </GFX>
   <presence>
-   <faction>Collective</faction>
+   <faction>Collective Drone</faction>
    <value>15.000000</value>
    <range>2</range>
   </presence>
@@ -9588,7 +9588,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -9658,7 +9658,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>75.000000</value>
    <range>1</range>
   </presence>
@@ -9692,7 +9692,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>aquatic3.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -9797,7 +9797,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -9823,7 +9823,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -9854,7 +9854,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -10016,7 +10016,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10058,7 +10058,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10133,7 +10133,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -10172,7 +10172,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -10206,7 +10206,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>0</range>
   </presence>
@@ -10395,7 +10395,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10431,7 +10431,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10469,7 +10469,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10509,7 +10509,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>desertic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10582,7 +10582,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>aquatic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10682,7 +10682,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>1</range>
   </presence>
@@ -10714,7 +10714,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>50.000000</value>
    <range>1</range>
   </presence>
@@ -10771,7 +10771,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10829,7 +10829,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station04.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10893,7 +10893,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining4.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -10927,7 +10927,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -10953,7 +10953,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -10979,7 +10979,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station02.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>0</range>
   </presence>
@@ -11039,7 +11039,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station03.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -11122,7 +11122,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -11185,7 +11185,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -11227,7 +11227,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11261,7 +11261,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11298,7 +11298,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11355,7 +11355,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>desertic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11399,7 +11399,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>1</range>
   </presence>
@@ -11529,7 +11529,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>traderoom.png</exterior>
   </GFX>
   <presence>
-   <faction>Independent</faction>
+   <faction>Civilian</faction>
    <value>100.000000</value>
    <range>0</range>
   </presence>
@@ -11563,7 +11563,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>lava.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11627,7 +11627,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11667,7 +11667,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>10.000000</value>
    <range>1</range>
   </presence>
@@ -11779,7 +11779,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11815,7 +11815,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining3.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11871,7 +11871,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -11953,7 +11953,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -11995,7 +11995,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12116,7 +12116,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining5.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -12149,7 +12149,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12190,7 +12190,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>mining3.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12231,7 +12231,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station05.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12250,7 +12250,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Civilian Standard">
   <virtual/>
   <presence>
-   <faction>Civilian</faction>
+   <faction>Emperial Citizen</faction>
    <value>50.000000</value>
    <range>0</range>
   </presence>
@@ -12258,7 +12258,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Dvaered Small">
   <virtual/>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12266,7 +12266,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Dvaered Unpresence">
   <virtual/>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>-1000.000000</value>
    <range>0</range>
   </presence>
@@ -12274,7 +12274,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Empire Small">
   <virtual/>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12282,7 +12282,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Empire Unpresence">
   <virtual/>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>-1000.000000</value>
    <range>0</range>
   </presence>
@@ -12306,7 +12306,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Frontier Small">
   <virtual/>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>60.000000</value>
    <range>2</range>
   </presence>
@@ -12314,7 +12314,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Frontier Unpresence">
   <virtual/>
   <presence>
-   <faction>Frontier</faction>
+   <faction>Frontier Defence</faction>
    <value>-1000.000000</value>
    <range>0</range>
   </presence>
@@ -12346,7 +12346,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Proteron Small">
   <virtual/>
   <presence>
-   <faction>Proteron</faction>
+   <faction>Proteron Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12354,7 +12354,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Proteron Unpresence">
   <virtual/>
   <presence>
-   <faction>Proteron</faction>
+   <faction>Proteron Military</faction>
    <value>-1000.000000</value>
    <range>0</range>
   </presence>
@@ -12362,7 +12362,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Sirius Small">
   <virtual/>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12370,7 +12370,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
  <asset name="Virtual Sirius Unpresence">
   <virtual/>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>-1000.000000</value>
    <range>0</range>
   </presence>
@@ -12409,7 +12409,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Dvaered</faction>
+   <faction>Dvaered Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12522,7 +12522,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>
@@ -12629,7 +12629,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>oceanic2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12723,7 +12723,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>snow.png</exterior>
   </GFX>
   <presence>
-   <faction>Sirius</faction>
+   <faction>Sirius Military</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12755,7 +12755,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>station00.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12800,7 +12800,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>100.000000</value>
    <range>2</range>
   </presence>
@@ -12839,7 +12839,7 @@ New Dortmund was never very successful in any sense of the term, but it is still
    <exterior>forest2.png</exterior>
   </GFX>
   <presence>
-   <faction>Empire</faction>
+   <faction>Emperial Military Force</faction>
    <value>50.000000</value>
    <range>2</range>
   </presence>

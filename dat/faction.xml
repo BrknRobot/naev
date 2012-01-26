@@ -10,40 +10,31 @@
  <faction name="Independent">
   <player>3</player>
   <colour>blue</colour>
-  <spawn>independent</spawn>
   <standing>independent</standing>
   <allies>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
- </faction>
- <faction name="Civilian">
-  <invisible />
-  <static />
-  <known/>
-  <player>0</player>
-  <colour>black</colour>
-  <spawn>civilian</spawn>
-  <allies>
-  </allies>
-  <enemies>
-   <enemy>Pirate</enemy>
-  </enemies>
+  <sub name="Civilian">
+   <spawn>independent</spawn>
+  </sub>
  </faction>
  <faction name="Proteron">
   <logo>proteron</logo>
   <longname>Proteron</longname>
   <player>3</player>
   <colour>purple</colour>
-  <spawn>proteron</spawn>
   <standing>proteron</standing>
-  <equip>empire</equip>
   <allies>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Proteron Military">
+   <spawn>proteron</spawn>
+   <equip>empire/empire_military</equip>
+  </sub>
  </faction>
  <faction name="Frontier">
   <known/>
@@ -51,20 +42,21 @@
   <longname>Frontier Alliance</longname>
   <player>3</player>
   <colour>yellow</colour>
-  <spawn>frontier</spawn>
   <standing>independent</standing>
   <allies>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Frontier Defence">
+   <spawn>frontier</spawn>
+  </sub>
  </faction>
  <faction name="Trader">
   <known/>
   <logo>trader</logo>
   <longname>Space Traders Guild</longname>
   <player>3</player>
-  <spawn>trader</spawn>
   <standing>trader</standing>
   <allies>
   </allies>
@@ -72,6 +64,9 @@
    <enemy>Pirate</enemy>
    <enemy>Raider</enemy>
   </enemies>
+  <sub name="Trader">
+   <spawn>trader</spawn>
+  </sub>
  </faction>
  <faction name="Pirate">
   <known/>
@@ -79,11 +74,8 @@
   <longname>Galactic Pirates</longname>
   <player>-20</player>
   <colour>red</colour>
-  <spawn>pirate</spawn>
   <standing>pirate</standing>
-  <equip>pirate</equip>
   <enemies>
-   <enemy>Civilian</enemy>
    <enemy>Empire</enemy>
    <enemy>Soromid</enemy>
    <enemy>Dvaered</enemy>
@@ -96,6 +88,10 @@
    <enemy>Goddard</enemy>
    <enemy>Proteron</enemy>
   </enemies>
+  <sub name="Pirate">
+   <spawn>pirate</spawn>
+   <equip>pirate</equip>
+  </sub>
  </faction>
  <faction name="Empire">
   <known/>
@@ -133,36 +129,42 @@
   <logo>empire</logo>
   <colour>orange</colour>
   <player>0</player>
-  <spawn>soromid</spawn>
   <standing>soromid</standing>
   <allies/>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Soromid">
+   <spawn>soromid</spawn>
+  </sub>
  </faction>
  <faction name="Collective">
   <static />
   <logo>collective</logo>
   <player>-100</player>
   <colour>silver</colour>
-  <spawn>collective</spawn>
-  <equip>collective</equip>
   <enemies>
    <enemy>Empire</enemy>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Collective Drone">
+   <spawn>collective</spawn>
+   <equip>collective</equip>
+  </sub>
  </faction>
  <faction name="FLF">
   <logo>flf</logo>
   <longname>Frontier Liberation Front</longname>
   <player>0</player>
   <colour>orange</colour>
-  <spawn>flf</spawn>
   <standing>flf</standing>
-  <equip>pirate</equip>
   <enemies>
    <enemy>Dvaered</enemy>
   </enemies>
+  <sub name="FLF">
+   <spawn>flf</spawn>
+   <equip>pirate</equip>
+  </sub>
  </faction>
  <faction name="Dvaered">
   <known/>
@@ -170,9 +172,7 @@
   <colour>brown</colour>
   <longname>House Dvaered</longname>
   <player>1</player>
-  <spawn>dvaered</spawn>
   <standing>dvaered</standing>
-  <equip>dvaered</equip>
   <allies>
    <ally>Empire</ally>
   </allies>
@@ -180,19 +180,25 @@
    <enemy>Pirate</enemy>
    <enemy>FLF</enemy>
   </enemies>
+  <sub name="Dvaered Military">
+   <spawn>dvaered</spawn>
+   <equip>dvaered</equip>
+  </sub>
  </faction>
  <faction name="Za'lek">
   <known/>
   <logo>zalek</logo>
   <longname>House Za'lek</longname>
   <player>2</player>
-  <spawn>zalek</spawn>
   <standing>zalek</standing>
   <allies>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Za'lek Drone Defence">
+   <spawn>zalek</spawn>
+  </sub>
  </faction>
  <faction name="Sirius">
   <known/>
@@ -200,14 +206,16 @@
   <colour>aqua</colour>
   <longname>House Sirius</longname>
   <player>3</player>
-  <spawn>sirius</spawn>
   <standing>sirius</standing>
-  <equip>sirius</equip>
   <allies>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Sirius Military">
+   <spawn>sirius</spawn>
+   <equip>sirius</equip>
+  </sub>
  </faction>
  <faction name="Goddard">
   <known/>
@@ -215,15 +223,17 @@
   <colour>blue</colour>
   <longname>House Goddard</longname>
   <player>2</player>
-  <spawn>goddard</spawn>
   <standing>independent</standing>
-  <equip>empire</equip>
   <allies>
    <ally>Empire</ally>
   </allies>
   <enemies>
    <enemy>Pirate</enemy>
   </enemies>
+  <sub name="Goddard">
+   <spawn>goddard</spawn>
+   <equip>empire/empire_military</equip>
+  </sub>
  </faction>
  <faction name="Mercenary">
   <invisible />

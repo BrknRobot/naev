@@ -1785,7 +1785,7 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
             xmlr_int(cur, "range", planet->presenceRange);
             if (xml_isNode(cur,"faction")) {
                flags |= FLAG_FACTIONSET;
-               planet->faction = faction_get( xml_get(cur) );
+               planet->faction = subfaction_get( xml_get(cur) );
                continue;
             }
          } while (xml_nextNode(cur));
