@@ -47,8 +47,8 @@
 #include "damagetype.h"
 
 
-#define PILOT_CHUNK_MIN 128 /**< Maximum chunks to increment pilot_stack by */
-#define PILOT_CHUNK_MAX 2048 /**< Minimum chunks to increment pilot_stack by */
+#define PILOT_CHUNK_MIN 128 /**< Minimum chunks to increment pilot_stack by */
+#define PILOT_CHUNK_MAX 2048 /**< Maximum chunks to increment pilot_stack by */
 #define CHUNK_SIZE      32 /**< Size to allocate memory by. */
 
 /* ID Generators. */
@@ -467,7 +467,7 @@ double pilot_getNearestAng( const Pilot *p, unsigned int *tp, double ang, int di
    double rx, ry;
 
    *tp = PLAYER_ID;
-   a  = 10e10;
+   a   = ang + M_PI;
    for (i=0; i<pilot_nstack; i++) {
 
       /* Must not be self. */
@@ -1325,7 +1325,7 @@ void pilot_renderOverlay( Pilot* p, const double dt )
  */
 void pilot_update( Pilot* pilot, const double dt )
 {
-   int i, n;
+   int i, nchg;
    unsigned int l;
    Pilot *target;
    double a, px,py, vx,vy;
@@ -1355,10 +1355,10 @@ void pilot_update( Pilot* pilot, const double dt )
    for (i=0; i<MAX_AI_TIMERS; i++)
       if (pilot->timer[i] > 0.)
          pilot->timer[i] -= dt;
-   n = 0;
    /* Update heat. */
    a = -1.;
    Q = 0.;
+   nchg = 0; /* Number of outfits that change state, processed at the end. */
    for (i=0; i<pilot->noutfits; i++) {
       o = pilot->outfits[i];
 
@@ -1377,13 +1377,17 @@ void pilot_update( Pilot* pilot, const double dt )
          o->stimer -= dt;
          if (o->stimer < 0.) {
             if (o->state == PILOT_OUTFIT_ON) {
-               o->stimer = outfit_cooldown( o->outfit );
-               o->state  = PILOT_OUTFIT_COOLDOWN;
-               n++;
+               if (outfit_isAfterburner( o->outfit )) /* Afterburners */
+                  pilot_afterburnOver( pilot );
+               else {
+                  o->stimer = outfit_cooldown( o->outfit );
+                  o->state  = PILOT_OUTFIT_COOLDOWN;
+               }
+               nchg++;
             }
             else if (o->state == PILOT_OUTFIT_COOLDOWN) {
                o->state  = PILOT_OUTFIT_OFF;
-               n++;
+               nchg++;
             }
          }
       }
@@ -1394,10 +1398,6 @@ void pilot_update( Pilot* pilot, const double dt )
       /* Handle lockons. */
       pilot_lockUpdateSlot( pilot, o, target, &a, dt );
    }
-
-   /* Must recalculate stats because something changed state. */
-   if (n > 0)
-      pilot_calcStats( pilot );
 
    /* Global heat. */
    pilot_heatUpdateShip( pilot, Q, dt );
@@ -1533,7 +1533,7 @@ void pilot_update( Pilot* pilot, const double dt )
    if (pilot->armour > pilot->armour_max)
       pilot->armour = pilot->armour_max;
 
-   /* regen shield */
+   /* Regen shield */
    if (pilot->stimer <= 0.) {
       pilot->shield += pilot->shield_regen * dt;
       if (pilot->sbonus > 0.)
@@ -1541,10 +1541,6 @@ void pilot_update( Pilot* pilot, const double dt )
       if (pilot->shield > pilot->shield_max)
          pilot->shield = pilot->shield_max;
    }
-
-   /* Update energy */
-   if ((pilot->energy < 1.) && pilot_isFlag(pilot, PILOT_AFTERBURNER))
-      pilot_rmFlag(pilot, PILOT_AFTERBURNER); /* Break afterburner */
 
    /*
     * Using RC circuit energy loading.
@@ -1561,16 +1557,40 @@ void pilot_update( Pilot* pilot, const double dt )
     */
    pilot->energy += (pilot->energy_max - pilot->energy) *
          (1. - exp( -dt / pilot->energy_tau));
+   pilot->energy -= pilot->energy_loss * dt;
+   if (pilot->energy > pilot->energy_max)
+      pilot->energy = pilot->energy_max;
+   else if (pilot->energy < 0.) {
+      pilot->energy = 0.;
+      /* Stop all on outfits. */
+      for (i=0; i<pilot->noutfits; i++) {
+         o = pilot->outfits[i];
+         /* Picky about our outfits. */
+         if (o->outfit == NULL)
+            continue;
+         if (!o->active)
+            continue;
+         if (o->state == PILOT_OUTFIT_ON) {
+            if (outfit_isAfterburner( o->outfit )) /* Afterburners */
+               pilot_afterburnOver( pilot );
+            else {
+               o->stimer = outfit_cooldown( o->outfit );
+               o->state  = PILOT_OUTFIT_COOLDOWN;
+            }
+            nchg++;
+         }
+      }
+   }
+
+   /* Must recalculate stats because something changed state. */
+   if (nchg > 0)
+      pilot_calcStats( pilot );
 
    /* Player damage decay. */
    if (pilot->player_damage > 0.)
       pilot->player_damage -= dt * PILOT_HOSTILE_DECAY;
    else
       pilot->player_damage = 0.;
-
-   /* check limits */
-   if (pilot->energy > pilot->energy_max)
-      pilot->energy = pilot->energy_max;
 
    /* Pilot is board/refueling.  Hack to match speeds. */
    if (pilot_isFlag(pilot, PILOT_REFUELBOARDING))
@@ -1610,16 +1630,20 @@ void pilot_update( Pilot* pilot, const double dt )
    if (!pilot_isFlag(pilot, PILOT_HYPERSPACE)) { /* limit the speed */
 
       /* pilot is afterburning */
-      if (pilot_isFlag(pilot, PILOT_AFTERBURNER) && /* must have enough energy left */
-               (pilot->energy > pilot->afterburner->outfit->u.afb.energy * dt)) {
-         pilot->solid->speed_max = pilot->speed +
-               pilot->speed * pilot->afterburner->outfit->u.afb.speed *
-               MIN( 1., pilot->afterburner->outfit->u.afb.mass_limit/pilot->solid->mass);
+      if (pilot_isFlag(pilot, PILOT_AFTERBURNER)) {
+         if (pilot->energy > pilot->afterburner->outfit->u.afb.energy * dt) { /* must have enough energy left */
+            pilot->solid->speed_max = pilot->speed +
+                  pilot->speed * pilot->afterburner->outfit->u.afb.speed *
+                  MIN( 1., pilot->afterburner->outfit->u.afb.mass_limit/pilot->solid->mass);
 
-         if (pilot->id == PLAYER_ID)
-            spfx_shake( 0.75*SHAKE_DECAY * dt); /* shake goes down at quarter speed */
+            if (pilot->id == PLAYER_ID)
+               spfx_shake( 0.75*SHAKE_DECAY * dt); /* shake goes down at quarter speed */
 
-         pilot->energy -= pilot->afterburner->outfit->u.afb.energy * dt; /* energy loss */
+            pilot->energy -= pilot->afterburner->outfit->u.afb.energy * dt; /* energy loss */
+         }
+         else {
+            pilot_afterburnOver( pilot );
+         }
       }
       else /* normal limit */
          pilot->solid->speed_max = pilot->speed;
@@ -1631,6 +1655,56 @@ void pilot_update( Pilot* pilot, const double dt )
    pilot->solid->update( pilot->solid, dt );
    gl_getSpriteFromDir( &pilot->tsx, &pilot->tsy,
          pilot->ship->gfx_space, pilot->solid->dir );
+}
+
+
+/**
+ * @brief Activate the afterburner.
+ */
+void pilot_afterburn (Pilot *p)
+{
+   //double afb_mod;
+   if (p == NULL)
+      return;
+
+   if (pilot_isFlag(p, PILOT_HYP_PREP) || pilot_isFlag(p, PILOT_HYPERSPACE) ||
+         pilot_isFlag(p, PILOT_LANDING) || pilot_isFlag(p, PILOT_TAKEOFF))
+      return;
+
+   /* Not under manual control. */
+   if (pilot_isFlag( p, PILOT_MANUAL_CONTROL ))
+      return;
+
+   /** @todo fancy effect? */
+   if (p->afterburner == NULL)
+      return;
+
+   if (p->afterburner->state == PILOT_OUTFIT_OFF) {
+      p->afterburner->state  = PILOT_OUTFIT_ON;
+      p->afterburner->stimer = outfit_duration( p->afterburner->outfit );
+      pilot_setFlag(p,PILOT_AFTERBURNER);
+   }
+
+   //afb_mod = MIN( 1., player.p->afterburner->outfit->u.afb.mass_limit / player.p->solid->mass );
+   //spfx_shake( afb_mod * player.p->afterburner->outfit->u.afb.rumble * SHAKE_MAX );
+}
+
+
+/**
+ * @brief Deactivates the afterburner.
+ */
+void pilot_afterburnOver (Pilot *p)
+{
+   if (p == NULL)
+      return;
+   if (p->afterburner == NULL)
+      return;
+
+   if (p->afterburner->state == PILOT_OUTFIT_ON) {
+      p->afterburner->state  = PILOT_OUTFIT_COOLDOWN;
+      p->afterburner->stimer = outfit_cooldown( p->afterburner->outfit );
+      pilot_rmFlag(p,PILOT_AFTERBURNER);
+   }
 }
 
 

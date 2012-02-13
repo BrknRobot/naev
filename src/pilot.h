@@ -134,7 +134,7 @@ typedef enum PilotOutfitState_ {
    PILOT_OUTFIT_OFF,    /**< Normal state. */
    PILOT_OUTFIT_WARMUP, /**< Outfit is starting to warm up. */
    PILOT_OUTFIT_ON,     /**< Outfit is activated and running. */
-   PILOT_OUTFIT_COOLDOWN, /**< Outfit is cooling down. */
+   PILOT_OUTFIT_COOLDOWN /**< Outfit is cooling down. */
 } PilotOutfitState;
 
 
@@ -298,6 +298,7 @@ typedef struct Pilot_ {
    double energy_max; /**< Maximum energy. */
    double energy_regen; /**< Energy regeneration rate (per second). */
    double energy_tau; /**< Tau regeneration rate for energy. */
+   double energy_loss; /**< Linear loss that bypasses the actual RC circuit stuff. */
 
    /* Electronic warfare. */
    double ew_base_hide; /**< Base static hide factor. */
@@ -476,6 +477,8 @@ void pilot_free( Pilot* p );
  */
 void pilot_setThrust( Pilot *p, double thrust );
 void pilot_setTurn( Pilot *p, double turn );
+void pilot_afterburn ( Pilot *p );
+void pilot_afterburnOver ( Pilot *p );
 
 
 /*

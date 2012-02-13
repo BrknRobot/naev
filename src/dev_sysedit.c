@@ -28,6 +28,8 @@
 
 #define EDITOR_WDWNAME  "Planet Property Editor"
 
+#define HIDE_DEFAULT_PLANET      0.25 /**< Default hide value for new planets. */
+
 #define BUTTON_WIDTH    90 /**< Map button width. */
 #define BUTTON_HEIGHT   30 /**< Map button height. */
 
@@ -302,16 +304,18 @@ static void sysedit_editPntClose( unsigned int wid, char *unused )
    char *inp;
 
    p = sysedit_sys->planets[ sysedit_select[0].u.planet ];
-   p->population     = (uint64_t)strtoull(window_getInput( sysedit_widEdit, "inpPop" ), 0, 10);
+   p->population     = (uint64_t)strtoull( window_getInput( sysedit_widEdit, "inpPop" ), 0, 10);
    p->class          = planetclass_get( window_getInput( sysedit_widEdit, "inpClass" )[0] );
-   inp = window_getInput( sysedit_widEdit, "inpLand" );
-   if (inp == NULL || strlen(inp) == 0)
+   inp               = window_getInput( sysedit_widEdit, "inpLand" );
+   if ((inp == NULL) || (strlen(inp) == 0)) {
       free( p->land_func );
+      p->land_func = NULL;
+   }
    else
       p->land_func = strdup( inp );
    p->presenceAmount = atof(window_getInput( sysedit_widEdit, "inpPresence" ));
    p->presenceRange  = atoi(window_getInput( sysedit_widEdit, "inpPresenceRange" ));
-   p->hide           = atof(window_getInput( sysedit_widEdit, "inpHide" ));
+   p->hide           = pow2( atof(window_getInput( sysedit_widEdit, "inpHide" )) );
 
    window_close( wid, unused );
 }
@@ -337,7 +341,7 @@ static void sysedit_editJumpClose( unsigned int wid, char *unused )
       jp_rmFlag( j, JP_HIDDEN );
       jp_rmFlag( j, JP_EXITONLY );
    }
-   j->hide  = atof(window_getInput( sysedit_widEdit, "inpHide" ));
+   j->hide  = pow2( atof(window_getInput( sysedit_widEdit, "inpHide" )) );
 
    window_close( wid, unused );
 }
@@ -379,6 +383,7 @@ static void sysedit_btnNew( unsigned int wid_unused, char *unused )
    p->gfx_exteriorPath  = strdup( b->gfx_exteriorPath );
    p->pos.x             = sysedit_xpos / sysedit_zoom;
    p->pos.y             = sysedit_ypos / sysedit_zoom;
+   p->hide              = pow2(HIDE_DEFAULT_PLANET);
 
    /* Add new planet. */
    system_addPlanet( sysedit_sys, name );
@@ -1202,7 +1207,7 @@ static void sysedit_editPnt( void )
    window_setInput( wid, "inpPresence", buf );
    snprintf( buf, sizeof(buf), "%d", p->presenceRange );
    window_setInput( wid, "inpPresenceRange", buf );
-   snprintf( buf, sizeof(buf), "%g", p->hide );
+   snprintf( buf, sizeof(buf), "%g", sqrt(p->hide) );
    window_setInput( wid, "inpHide", buf );
 
    /* Generate the list. */
@@ -1301,7 +1306,7 @@ static void sysedit_editJump( void )
          "btnClose", "Close", sysedit_editJumpClose );
 
    /* Load current values. */
-   snprintf( buf, sizeof(buf), "%g", j->hide );
+   snprintf( buf, sizeof(buf), "%g", sqrt(j->hide) );
    window_setInput( wid, "inpHide", buf );
 }
 

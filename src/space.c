@@ -73,7 +73,6 @@
 /* used to overcome warnings due to 0 values */
 #define FLAG_XSET             (1<<0) /**< Set the X position value. */
 #define FLAG_YSET             (1<<1) /**< Set the Y position value. */
-#define FLAG_ASTEROIDSSET     (1<<2) /**< Set the asteroid value. */
 #define FLAG_INTERFERENCESET  (1<<3) /**< Set the interference value. */
 #define FLAG_SERVICESSET      (1<<4) /**< Set the service value. */
 #define FLAG_FACTIONSET       (1<<5) /**< Set the faction value. */
@@ -562,7 +561,7 @@ double system_getClosest( const StarSystem *sys, int *pnt, int *jp, double x, do
    /* Default output. */
    *pnt = -1;
    *jp  = -1;
-   d    = 10e10;
+   d    = INFINITY;
 
    /* Planets. */
    for (i=0; i<sys->nplanets; i++) {
@@ -609,7 +608,7 @@ double system_getClosestAng( const StarSystem *sys, int *pnt, int *jp, double x,
    /* Default output. */
    *pnt = -1;
    *jp  = -1;
-   a    = 10e10;
+   a    = ang + M_PI;
 
    /* Planets. */
    for (i=0; i<sys->nplanets; i++) {
@@ -902,6 +901,15 @@ Planet* planet_getAll( int *n )
    return planet_stack;
 }
 
+
+/**
+ * @brief Sets a planet's known status, if it's real.
+ */
+void planet_setKnown( Planet *p )
+{
+   if (p->real == ASSET_REAL)
+      planet_setFlag(p, PLANET_KNOWN);
+}
 
 /**
  * @brief Check to see if a planet exists.
@@ -1261,7 +1269,7 @@ void space_update( const double dt )
       /* Planet updates */
       for (i=0; i<cur_system->nplanets; i++)
          if (( !planet_isKnown( cur_system->planets[i] )) && ( pilot_inRangePlanet( player.p, i ))) {
-            planet_setFlag( cur_system->planets[i], PLANET_KNOWN );
+            planet_setKnown( cur_system->planets[i] );
             player_message( "You discovered \e%c%s\e\0.",
                   planet_getColourChar( cur_system->planets[i] ),
                   cur_system->planets[i]->name );
@@ -1280,7 +1288,10 @@ void space_update( const double dt )
             player_message( "You discovered a Jump Point." );
             hparam[0].type  = HOOK_PARAM_STRING;
             hparam[0].u.str = "jump";
-            hparam[1].type  = HOOK_PARAM_SENTINEL;
+            hparam[1].type  = HOOK_PARAM_JUMP;
+            hparam[1].u.lj.srcid = cur_system->id;
+            hparam[1].u.lj.destid = cur_system->jumps[i].target->id;
+            hparam[2].type  = HOOK_PARAM_SENTINEL;
             hooks_runParam( "discover", hparam );
          }
    }
@@ -1909,6 +1920,9 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
    }
 #undef MELEMENT
 
+   /* Square to allow for linear multiplication with squared distances. */
+   planet->hide = pow2(planet->hide);
+
    return 0;
 }
 
@@ -2298,11 +2312,7 @@ static StarSystem* system_parse( StarSystem *sys, const xmlNodePtr parent )
             xmlr_strd( cur, "background", sys->background );
             xmlr_int( cur, "stars", sys->stars );
             xmlr_float( cur, "radius", sys->radius );
-            if (xml_isNode(cur,"asteroids")) {
-               flags |= FLAG_ASTEROIDSSET;
-               sys->asteroids = xml_getInt(cur);
-            }
-            else if (xml_isNode(cur,"interference")) {
+            if (xml_isNode(cur,"interference")) {
                flags |= FLAG_INTERFERENCESET;
                sys->interference = xml_getFloat(cur);
             }
@@ -2340,7 +2350,6 @@ static StarSystem* system_parse( StarSystem *sys, const xmlNodePtr parent )
    MELEMENT((flags&FLAG_YSET)==0,"y");
    MELEMENT(sys->stars==0,"stars");
    MELEMENT(sys->radius==0.,"radius");
-   MELEMENT((flags&FLAG_ASTEROIDSSET)==0,"asteroids");
    MELEMENT((flags&FLAG_INTERFERENCESET)==0,"inteference");
 #undef MELEMENT
 
@@ -2501,6 +2510,9 @@ static int system_parseJumpPoint( const xmlNodePtr node, StarSystem *sys )
 
    if (!jp_isFlag(j,JP_AUTOPOS) && !pos)
       WARN("JumpPoint in system '%s' is missing pos element but does not have autopos flag.", sys->name);
+
+   /* Square to allow for linear multiplication with squared distances. */
+   j->hide = pow2(j->hide);
 
    /* Added jump. */
    sys->njumps++;
@@ -2886,7 +2898,7 @@ void space_clearKnown (void)
          jp_rmFlag(&sys->jumps[j],JP_KNOWN);
    }
    for (j=0; j<planet_nstack; j++)
-      planet_rmFlag(&planet_stack[i],PLANET_KNOWN);
+      planet_rmFlag(&planet_stack[j],PLANET_KNOWN);
 }
 
 
@@ -3107,7 +3119,7 @@ static int space_parseAssets( xmlNodePtr parent, StarSystem* sys )
       if (xml_isNode(node,"planet")) {
          planet = planet_get(xml_get(node));
          if (planet != NULL) /* Must exist */
-            planet_setFlag(planet,PLANET_KNOWN);
+            planet_setKnown(planet);
       }
       else if (xml_isNode(node,"jump")) {
          jp = jump_get(xml_get(node), sys);

@@ -108,6 +108,10 @@ Contributions
    Cypher3c <cypher3c@gmail.com>
       * Spiced up the boring generic cargo missios.
 
+   Nathan Loewen <loewen.nathan@gmail.com>
+      * Missions
+      * Misc coding support
+
    Fisherman
       * Threading code to speed up nebula generation (and in the future who knows?)
       * Hot dog mission
@@ -119,8 +123,14 @@ Contributions
    Josh Combs
       * Artist of most of the nebulae.
 
+   Galileus
+      * Modeller of the Shark and Rhino
+
    Devin Khan
-      * Modeller
+      * Modeller of the Phalanx
+
+   Old Man <oldtopman@gmail.com>
+      * Desura Maintainer
 
 
 Testers

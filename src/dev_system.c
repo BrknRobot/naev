@@ -107,7 +107,6 @@ static int dsys_saveSystem( xmlTextWriterPtr writer, const StarSystem *sys )
       xmlw_elem( writer, "background", "%s", sys->background );
    xmlw_elem( writer, "radius", "%f", sys->radius );
    xmlw_elem( writer, "stars", "%d", sys->stars );
-   xmlw_elem( writer, "asteroids", "%d", sys->asteroids );
    xmlw_elem( writer, "interference", "%f", sys->interference );
    xmlw_startElem( writer, "nebula" );
    xmlw_attr( writer, "volatility", "%f", sys->nebu_volatility );
@@ -158,7 +157,7 @@ static int dsys_saveSystem( xmlTextWriterPtr writer, const StarSystem *sys )
          xmlw_elemEmpty( writer, "hidden" );
       if (jp_isFlag( jp, JP_EXITONLY ))
          xmlw_elemEmpty( writer, "exitonly" );
-      xmlw_elem( writer, "hide", "%f", jp->hide );
+      xmlw_elem( writer, "hide", "%f", sqrt(jp->hide) );
       xmlw_endElem( writer ); /* "jump" */
    }
    xmlw_endElem( writer ); /* "jumps" */

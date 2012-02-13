@@ -248,7 +248,7 @@ void map_open (void)
    /*
     * Bottom stuff
     *
-    * [+] [-]  Nebula, Asteroids, Interference
+    * [+] [-]  Nebula, Interference
     */
    /* Zoom buttons */
    window_addButton( wid, 40, 20, 30, 30, "btnZoomIn", "+", map_buttonZoom );
@@ -1288,7 +1288,7 @@ void map_select( StarSystem *sys, char shifted )
          if (map_npath==0) {
             player_hyperspacePreempt(0);
             player_targetHyperspaceSet( -1 );
-            player_autonavAbort(NULL);
+            player_autonavAbortJump(NULL);
          }
          else  {
             /* see if it is a valid hyperspace target */
@@ -1296,8 +1296,6 @@ void map_select( StarSystem *sys, char shifted )
                if (map_path[0] == cur_system->jumps[i].target) {
                   player_hyperspacePreempt(1);
                   player_targetHyperspaceSet( i );
-                  if (!shifted)
-                     player_autonavAbort(NULL);
                   break;
                }
             }
@@ -1305,7 +1303,7 @@ void map_select( StarSystem *sys, char shifted )
       }
       else { /* unreachable. */
          player_targetHyperspaceSet( -1 );
-         player_autonavAbort(NULL);
+         player_autonavAbortJump(NULL);
       }
    }
 
@@ -1617,7 +1615,7 @@ int map_map( const Outfit *map )
       sys_setFlag(map->u.map->systems[i], SYSTEM_KNOWN);
 
    for (i=0; i<array_size(map->u.map->assets);i++)
-      planet_setFlag(map->u.map->assets[i], PLANET_KNOWN);
+      planet_setKnown(map->u.map->assets[i]);
 
    for (i=0; i<array_size(map->u.map->jumps);i++)
       jp_setFlag(map->u.map->jumps[i], JP_KNOWN);

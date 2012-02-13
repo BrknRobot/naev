@@ -226,7 +226,6 @@ struct StarSystem_ {
    char* name; /**< star system name */
    Vector2d pos; /**< position */
    int stars; /**< Amount of "stars" it has. */
-   int asteroids; /**< @todo implement asteroids */
    double interference; /**< in % @todo implement interference. */
    double nebu_density; /**< Nebula density (0. - 1000.) */
    double nebu_volatility; /**< Nebula volatility (0. - 1000.) */
@@ -289,6 +288,7 @@ char* planet_getSystem( const char* planetname );
 Planet* planet_getAll( int *n );
 Planet* planet_get( const char* planetname );
 Planet* planet_getIndex( int ind );
+void planet_setKnown( Planet *p );
 int planet_index( const Planet *p );
 int planet_exists( const char* planetname );
 const char *planet_existsCase( const char* planetname );

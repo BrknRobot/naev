@@ -23,6 +23,8 @@
 static double sensor_curRange    = 0.; /**< Current base sensor range, used to calculate
                                          what is in range and what isn't. */
 
+#define  EVASION_SCALE              1.15           /**< Scales the evasion factor to the hide factor. Ensures that ships always have an evasion factor higher than their hide factor. */
+#define  SENSOR_DEFAULT_RANGE       7500           /**< The default sensor range for all ships. */
 
 /**
  * @brief Updates the pilot's static electronic warfare properties.
@@ -50,7 +52,7 @@ void pilot_ewUpdateDynamic( Pilot *p )
 
    /* Update evasion. */
    p->ew_movement = pilot_ewMovement( VMOD(p->solid->vel) );
-   p->ew_evasion  = p->ew_hide * p->ew_movement;
+   p->ew_evasion  = p->ew_hide * p->ew_movement * EVASION_SCALE;
 }
 
 
@@ -95,14 +97,9 @@ double pilot_ewMass( double mass )
  */
 void pilot_updateSensorRange (void)
 {
-   /* Calculate the sensor sensor_curRange. */
-   /* 0    ->   7500.0
-    * 250  ->   3333.33333333
-    * 500  ->   2142.85714285
-    * 750  ->   1578.94736842
-    * 1000 ->   1250.0 */
-   sensor_curRange  = 7500;
-   sensor_curRange /= ((cur_system->interference + 200) / 200.);
+   /* Adjust sensor range based on system interference. */
+   /* See: http://www.wolframalpha.com/input/?i=y+%3D+7500+%2F+%28%28x+%2B+200%29+%2F+200%29+from+x%3D0+to+1000 */
+   sensor_curRange = SENSOR_DEFAULT_RANGE / ((cur_system->interference + 200) / 200.);
 
    /* Speeds up calculations as we compare it against vectors later on
     * and we want to avoid actually calculating the sqrt(). */
@@ -186,12 +183,13 @@ int pilot_inRangePlanet( const Pilot *p, int target )
    if ( !pnt->real )
       return 0;
 
-   sense = sensor_curRange * p->ew_detect;
+   /* @TODO ew_detect should be squared upon being set. */
+   sense = sensor_curRange * pow2(p->ew_detect);
 
    /* Get distance. */
    d = vect_dist2( &p->solid->pos, &pnt->pos );
 
-   if ( d * pnt->hide * ( 1 + cur_system->interference / 200 ) < sense )
+   if (d * pnt->hide < sense )
       return 1;
 
    return 0;
@@ -218,18 +216,17 @@ int pilot_inRangeJump( const Pilot *p, int i )
    /* Get the jump point. */
    jp = &cur_system->jumps[i];
 
-   /* jump point is not exit only */
-   if (!jp_isFlag( jp, JP_HIDDEN ) && !jp_isFlag( jp, JP_EXITONLY )) /* regular */
-      sense = sensor_curRange * p->ew_jumpDetect;
-   else if (jp_isFlag( jp, JP_HIDDEN ) || jp_isFlag( jp, JP_EXITONLY )) /* exit only */
+   /* We don't want exit-only or unknown hidden jumps. */
+   if ((jp_isFlag(jp, JP_EXITONLY)) || ((jp_isFlag(jp, JP_HIDDEN)) && (!jp_isKnown(jp)) ))
       return 0;
 
+   sense = sensor_curRange * p->ew_jumpDetect;
    hide = jp->hide;
 
    /* Get distance. */
    d = vect_dist2( &p->solid->pos, &jp->pos );
 
-   if ( d * hide * ( 1 + cur_system->interference / 200 ) < sense )
+   if (d * hide < sense)
       return 1;
 
    return 0;
