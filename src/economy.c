@@ -188,47 +188,6 @@ int commodity_compareTech( const void *commodity1, const void *commodity2 )
 
 
 /**
- * @brief Loads a commodity.
- *
- *    @param temp Commodity to load data into.
- *    @param parent XML node to load from.
- *    @return Commodity loaded from parent.
- */
-static int commodity_parse( Commodity *temp, xmlNodePtr parent )
-{
-   xmlNodePtr node;
-
-   /* Clear memory. */
-   memset( temp, 0, sizeof(Commodity) );
-
-   /* Get name. */
-   xmlr_attr( parent, "name", temp->name );
-   if (temp->name == NULL)
-      WARN("Commodity from "COMMODITY_DATA_PATH" has invalid or no name");
-
-   /* Parse body. */
-   node = parent->xmlChildrenNode;
-   do {
-      xml_onlyNodes(node);
-      xmlr_strd(node, "description", temp->description);
-      xmlr_int(node, "price", temp->price);
-      WARN("Commodity '%s' has unknown node '%s'.", temp->name, node->name);
-   } while (xml_nextNode(node));
-
-#if 0 /* shouldn't be needed atm */
-#define MELEMENT(o,s)   if (o) WARN("Commodity '%s' missing '"s"' element", temp->name)
-   MELEMENT(temp->description==NULL,"description");
-   MELEMENT(temp->high==0,"high");
-   MELEMENT(temp->medium==0,"medium");
-   MELEMENT(temp->low==0,"low");
-#undef MELEMENT
-#endif
-
-   return 0;
-}
-
-
-/**
  * @brief Throws cargo out in space graphically.
  *
  *    @param pilot ID of the pilot throwing the stuff out
@@ -264,73 +223,100 @@ void commodity_Jettison( int pilot, Commodity* com, int quantity )
    }
 }
 
-
 /**
- * @brief Loads all the commodity data.
+ * @brief Loads a commodity.
  *
- *    @return 0 on success.
+ *    @param temp Commodity to load data into.
+ *    @param parent XML node to load from.
+ *    @return Commodity loaded from parent.
  */
+static int commodity_parse( Commodity *temp, xmlNodePtr parent )
+{
+   xmlNodePtr node;
+   char buf[PATH_MAX], *dat;
+   uint32_t ndat;
+
+   /* Clear memory. */
+   memset( temp, 0, sizeof(Commodity) );
+
+   /* Get name. */
+   xmlr_attr( parent, "name", temp->name );
+   if (temp->name == NULL)
+      WARN("Commodity from "COMMODITY_DATA_PATH" has invalid or no name");
+
+   /* Parse body. */
+   node = parent->xmlChildrenNode;
+   do {
+      xml_onlyNodes(node);
+      xmlr_strd(node, "description", temp->description);
+      xmlr_int(node, "price", temp->price);
+
+      if (xml_isNode(node, "lua")) {
+         if (temp->lua != NULL)
+            WARN("Faction '%s' has duplicate 'lua' tag.", temp->name);
+         nsnprintf( buf, sizeof(buf), "dat/commodities/%s.lua", xml_raw(node) );
+         temp->lua = nlua_newState();
+         nlua_loadStandard( temp->lua, 0 );
+         dat = ndata_read( buf, &ndat );
+         if (luaL_dobuffer(temp->lua, dat, ndat, buf) != 0) {
+            WARN("Failed to run lua script: %s\n"
+                  "%s\n"
+                  "Most likely Lua file has improper syntax, please check",
+                  buf, lua_tostring(temp->lua,-1));
+            lua_close( temp->lua );
+            temp->lua = NULL;
+         }
+         free(dat);
+         continue;
+      }
+      else
+         WARN("Commodity '%s' has unknown node '%s'.", temp->name, node->name);
+   } while (xml_nextNode(node));
+
+   return 0;
+}
+
+
 int commodity_load (void)
 {
+   int mem;
    uint32_t bufsize;
-   char *buf;
-   xmlNodePtr node;
-   xmlDocPtr doc;
+   char *buf = ndata_read( COMMODITY_DATA_PATH, &bufsize);
 
-   /* Load the file. */
-   buf = ndata_read( COMMODITY_DATA_PATH, &bufsize);
-   if (buf == NULL)
-      return -1;
+   xmlNodePtr parent, node;
+   xmlDocPtr doc = xmlParseMemory( buf, bufsize );
 
-   /* Handle the XML. */
-   doc = xmlParseMemory( buf, bufsize );
-   if (doc == NULL) {
-      WARN("'%s' is not valid XML.", COMMODITY_DATA_PATH);
-      return -1;
-   }
-
-   node = doc->xmlChildrenNode; /* Commodities node */
-   if (strcmp((char*)node->name,XML_COMMODITY_ID)) {
+   parent = doc->xmlChildrenNode; /* Factions node */
+   if (!xml_isNode(parent,XML_COMMODITY_ID)) {
       ERR("Malformed "COMMODITY_DATA_PATH" file: missing root element '"XML_COMMODITY_ID"'");
       return -1;
    }
 
-   node = node->xmlChildrenNode; /* first faction node */
+   node = parent->xmlChildrenNode; /* first faction node */
    if (node == NULL) {
       ERR("Malformed "COMMODITY_DATA_PATH" file: does not contain elements");
       return -1;
    }
 
+   mem = 0;
    do {
-      xml_onlyNodes(node);
-      if (xml_isNode(node, XML_COMMODITY_TAG)) {
-
-         /* Make room for commodity. */
-         commodity_stack = realloc(commodity_stack,
-               sizeof(Commodity)*(++commodity_nstack));
-
-         /* Load commodity. */
-         commodity_parse(&commodity_stack[commodity_nstack-1], node);
-
-         /* See if should get added to commodity list. */
-         if (commodity_stack[commodity_nstack-1].price > 0.) {
-            econ_nprices++;
-            econ_comm = realloc(econ_comm, econ_nprices * sizeof(int));
-            econ_comm[econ_nprices-1] = commodity_nstack-1;
+      if (xml_isNode(node,XML_COMMODITY_TAG)) {
+         /* See if must grow memory.  */
+         commodity_nstack++;
+         if (commodity_nstack > mem) {
+            mem ++;
+            commodity_stack = realloc(commodity_stack, sizeof(Commodity)*mem);
          }
+
+         /* Load faction. */
+         commodity_parse(&commodity_stack[commodity_nstack-1], node);
       }
-      else
-         WARN("'"COMMODITY_DATA_PATH"' has unknown node '%s'.", node->name);
    } while (xml_nextNode(node));
 
-   xmlFreeDoc(doc);
-   free(buf);
-
-   DEBUG("Loaded %d Commodit%s", commodity_nstack, (commodity_nstack==1) ? "y" : "ies" );
+   /* Shrink to minimum size. */
+   commodity_stack = realloc(commodity_stack, sizeof(Commodity)*commodity_nstack);
 
    return 0;
-
-
 }
 
 

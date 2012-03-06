@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include "nlua.h"
+#include "nluadef.h"
 
 #define ECON_CRED_STRLEN      32 /**< Maximum length a credits2str string can reach. */
 
@@ -29,6 +31,7 @@ typedef int64_t credits_t;
 typedef struct Commodity_ {
    char* name; /**< Name of the commodity. */
    char* description; /**< Description of the commodity. */
+   lua_State *lua; /**< Lua script. */
    /* Prices. */
    double price; /**< Base price of the commodity. */
 } Commodity;
