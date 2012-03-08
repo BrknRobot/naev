@@ -121,8 +121,9 @@ typedef struct Planet_ {
    char* description; /**< planet description */
    char* bar_description; /**< spaceport bar description */
    unsigned int services; /**< what services they offer */
-   Commodity **commodities; /**< what commodities they sell */
+   Commodity *commodities; /**< what commodities they sell */
    int ncommodities; /**< the amount they have */
+   int mcommodities; /**< how many commodities we have memory for */
    tech_group_t *tech; /**< Planet tech. */
 
    /* Graphics. */
@@ -246,9 +247,6 @@ struct StarSystem_ {
    Fleet** fleets; /**< fleets that can appear in the current system */
    int nfleets; /**< total number of fleets */
    double avg_pilot; /**< Target amount of pilots in the system. */
-
-   /* Calculated. */
-   double *prices; /**< Handles the prices in the system. */
 
    /* Presence. */
    SystemPresence *presence; /**< Pointer to an array of presences in this system. */

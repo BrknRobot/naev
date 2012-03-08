@@ -25,15 +25,16 @@ typedef int64_t credits_t;
  * @struct Commodity
  *
  * @brief Represents a commodity.
- *
- * @todo Use inverse normal?
  */
 typedef struct Commodity_ {
    char* name; /**< Name of the commodity. */
    char* description; /**< Description of the commodity. */
    lua_State *lua; /**< Lua script. */
    /* Prices. */
-   double price; /**< Base price of the commodity. */
+   int supply;
+   int demand;
+   double base_price; /**< Base price of the commodity. */
+   double price; /**< Actual price of the commodity. */
 } Commodity;
 
 

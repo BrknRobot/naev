@@ -215,7 +215,7 @@ static void commodity_exchange_open( unsigned int wid )
    if (land_planet->ncommodities > 0) {
       goods = malloc(sizeof(char*) * land_planet->ncommodities);
       for (i=0; i<land_planet->ncommodities; i++)
-         goods[i] = strdup(land_planet->commodities[i]->name);
+         goods[i] = strdup(land_planet->commodities[i].name);
       ngoods = land_planet->ncommodities;
    }
    else {
@@ -247,21 +247,23 @@ static void commodity_update( unsigned int wid, char* str )
          "\n"
          "NA Tons\n" );
       window_modifyText( wid, "txtDInfo", buf );
-      window_modifyText( wid, "txtDesc", "No outfits available." );
+      window_modifyText( wid, "txtDesc", "No commodities available." );
    }
-   com = commodity_get( comname );
+   else {
+      com = commodity_get( comname );
 
-   /* modify text */
-   nsnprintf( buf, PATH_MAX,
-         "%d Tons\n"
-         "%"CREDITS_PRI" Credits/Ton\n"
-         "\n"
-         "%d Tons\n",
-         pilot_cargoOwned( player.p, comname ),
-         planet_commodityPrice( land_planet, com ),
-         pilot_cargoFree(player.p));
-   window_modifyText( wid, "txtDInfo", buf );
-   window_modifyText( wid, "txtDesc", com->description );
+      /* modify text */
+      nsnprintf( buf, PATH_MAX,
+            "%d Tons\n"
+            "%"CREDITS_PRI" Credits/Ton\n"
+            "\n"
+            "%d Tons\n",
+            pilot_cargoOwned( player.p, comname ),
+            planet_commodityPrice( land_planet, com ),
+            pilot_cargoFree(player.p));
+      window_modifyText( wid, "txtDInfo", buf );
+      window_modifyText( wid, "txtDesc", com->description );
+   }
 
    /* Button enabling/disabling */
    if (commodity_canBuy( comname ))

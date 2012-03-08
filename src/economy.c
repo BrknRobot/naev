@@ -55,10 +55,13 @@
 static Commodity* commodity_stack = NULL; /**< Contains all the commodities. */
 static int commodity_nstack       = 0; /**< Number of commodities in the stack. */
 
-
 /* systems stack. */
 extern StarSystem *systems_stack; /**< Star system stack. */
 extern int systems_nstack; /**< Number of star systems. */
+
+/* planets stack. */
+extern Planet *planet_stack; /**< Star system stack. */
+extern int planet_nstack; /**< Number of star systems. */
 
 
 /*
@@ -249,7 +252,7 @@ static int commodity_parse( Commodity *temp, xmlNodePtr parent )
    do {
       xml_onlyNodes(node);
       xmlr_strd(node, "description", temp->description);
-      xmlr_int(node, "price", temp->price);
+      xmlr_int(node, "price", temp->base_price);
 
       if (xml_isNode(node, "lua")) {
          if (temp->lua != NULL)
@@ -348,7 +351,7 @@ void commodity_free (void)
 credits_t economy_getPrice( const Commodity *com,
       const StarSystem *sys, const Planet *p )
 {
-   (void) p;
+   (void) sys;
    int i, k;
    double price;
 
@@ -368,7 +371,7 @@ credits_t economy_getPrice( const Commodity *com,
 
    /* Calculate price. */
    price  = (double) com->price;
-   price *= sys->prices[i];
+   price *= p->commodities[i].price;
    return (credits_t) price;
 }
 
@@ -520,18 +523,27 @@ static int econ_createGMatrix (void)
  *    @return 0 on success.
  */
 int economy_init (void)
-{
-   int i;
+{	
+   int i,j;
 
    /* Must not be initialized. */
    if (econ_initialized)
       return 0;
 
    /* Allocate price space. */
-   for (i=0; i<systems_nstack; i++) {
-      if (systems_stack[i].prices != NULL)
-         free(systems_stack[i].prices);
-      systems_stack[i].prices = calloc(econ_nprices, sizeof(double));
+   for (i=0; i<commodity_nstack; i++) {
+      if (commodity_stack[i].lua == NULL)
+         continue;
+      for (j=0; j<planet_nstack; j++) {
+         /* See if must grow memory.  */
+         planet_stack[j].ncommodities++;
+         if (planet_stack[j].ncommodities > planet_stack[j].mcommodities) {
+            planet_stack[j].mcommodities++;
+            planet_stack[j].commodities = realloc(planet_stack[j].commodities, sizeof(Commodity)*planet_stack[j].mcommodities);
+         }
+
+         planet_stack[j].commodities[planet_stack[j].ncommodities-1] = commodity_stack[i];
+      }
    }
 
    /* Mark economy as initialized. */
@@ -625,7 +637,7 @@ int economy_update( unsigned int dt )
       scale    = 1.;
       offset   = 1.;
       for (i=0; i<systems_nstack; i++)
-         systems_stack[i].prices[j] = X[i] * scale + offset;
+         planet_stack[i].commodities[j].price = X[i] * scale + offset;
    }
 
    /* Clean up. */
@@ -646,11 +658,12 @@ void economy_destroy (void)
    if (!econ_initialized)
       return;
 
-   /* Clean up the prices in the systems stack. */
-   for (i=0; i<systems_nstack; i++) {
-      if (systems_stack[i].prices != NULL) {
-         free(systems_stack[i].prices);
-         systems_stack[i].prices = NULL;
+   /* Clean up the prices in the planets stack. */
+   for (i=0; i<planet_nstack; i++) {
+      if (planet_stack[i].commodities != NULL) {
+         free(planet_stack[i].commodities);
+         planet_stack[i].commodities = NULL;
+         planet_stack[i].ncommodities = 0;
       }
    }
 

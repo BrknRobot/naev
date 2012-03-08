@@ -91,8 +91,8 @@ static int systems_mstack = 0; /**< Number of memory allocated for star system s
 /*
  * Planet stack.
  */
-static Planet *planet_stack = NULL; /**< Planet stack. */
-static int planet_nstack = 0; /**< Planet stack size. */
+Planet *planet_stack = NULL; /**< Planet stack. */
+int planet_nstack = 0; /**< Planet stack size. */
 static int planet_mstack = 0; /**< Memory size of planet stack. */
 
 /*
@@ -1708,7 +1708,6 @@ void space_gfxUnload( StarSystem *sys )
  */
 static int planet_parse( Planet *planet, const xmlNodePtr parent )
 {
-   int mem;
    char str[PATH_MAX], *tmp;
    xmlNodePtr node, cur, ccur;
    unsigned int flags;
@@ -1831,30 +1830,6 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
 
                } while (xml_nextNode(ccur));
             }
-
-            else if (xml_isNode(cur, "commodities")) {
-               ccur = cur->children;
-               mem = 0;
-               do {
-                  if (xml_isNode(ccur,"commodity")) {
-                     planet->ncommodities++;
-                     /* Memory must grow. */
-                     if (planet->ncommodities > mem) {
-                        if (mem == 0)
-                           mem = CHUNK_SIZE_SMALL;
-                        else
-                           mem *= 2;
-                        planet->commodities = realloc(planet->commodities,
-                              mem * sizeof(Commodity*));
-                     }
-                     planet->commodities[planet->ncommodities-1] =
-                        commodity_get( xml_get(ccur) );
-                  }
-               } while (xml_nextNode(ccur));
-               /* Shrink to minimum size. */
-               planet->commodities = realloc(planet->commodities,
-                     planet->ncommodities * sizeof(Commodity*));
-            }
          } while (xml_nextNode(cur));
          continue;
       }
@@ -1890,8 +1865,6 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
       MELEMENT( (planet_hasService(planet,PLANET_SERVICE_OUTFITS) ||
                planet_hasService(planet,PLANET_SERVICE_SHIPYARD)) &&
             (planet->tech==NULL), "tech" );
-      MELEMENT( planet_hasService(planet,PLANET_SERVICE_COMMODITY) &&
-            (planet->ncommodities==0),"commodity" );
       MELEMENT( (flags&FLAG_FACTIONSET) && (planet->presenceAmount == 0.),
             "presence" );
    }
