@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<attribute name="Pollution">
+ <desc>This planet suffers from pollution, caused by heavy industry, dense population, or mismanagement of the natural ecosystem.</desc>
+</attribute>
