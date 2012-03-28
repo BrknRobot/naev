@@ -227,7 +227,9 @@ end
 
 --re-hail the player
 function reHail()
-	preacher:hailPlayer()
+	if preacher:exists() then
+		preacher:hailPlayer()
+	end
 end
 
 --random praise for the Sirichana
@@ -403,4 +405,5 @@ function jumpCleanup()
 			j:hyperspace(target,true) --attack back as they move away?
 		end
 	end
+	evt.finish()
 end
