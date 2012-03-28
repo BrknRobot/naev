@@ -63,8 +63,6 @@ typedef enum PlanetClass_ {
 
 typedef struct Attribute_ {
    char *name;
-   char *desc;
-   int amount;
 } Attribute;
 
 /*
