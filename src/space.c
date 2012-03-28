@@ -144,6 +144,10 @@ static int systems_load (void);
 static StarSystem* system_parse( StarSystem *system, const xmlNodePtr parent );
 static int system_parseJumpPoint( const xmlNodePtr node, StarSystem *sys );
 static void system_parseJumps( const xmlNodePtr parent );
+/* attributes */
+static int attributes_load(void);
+static int attribute_parse(Attribute *a, xmlNodePtr parent );
+static int attribute_get(char *name);
 /* misc */
 static int getPresenceIndex( StarSystem *sys, int faction );
 static void presenceCleanup( StarSystem *sys );
@@ -1463,6 +1467,29 @@ Planet *planet_new (void)
    return p;
 }
 
+/**
+ * @brief Gets the position of a attribute in the stack based on the attributes name.
+ *
+ * @param name The name of the attribute to get.
+ */
+static int attribute_get(char *name) {
+   int i;
+
+   for (i=0; i<attribute_nstack; i++) {
+      if (strcmp(attribute_stack[i].name, name) == 0)
+         return i;
+   }
+
+   return -1;
+}
+
+/**
+ * @brief Parses an attribute from an xml node.
+ *
+ *    @param a Attribute to fill up.
+ *    @param parent Node that contains attribute data.
+ *    @return 0 on success.
+ */
 static int attribute_parse( Attribute *a, xmlNodePtr parent)
 {
    xmlNodePtr node;
@@ -1487,6 +1514,9 @@ static int attribute_parse( Attribute *a, xmlNodePtr parent)
    return 0;
 }
 
+/**
+ * Loads all the attributes.
+ */
 static int attributes_load()
 {
  uint32_t bufsize;
@@ -1516,7 +1546,7 @@ static int attributes_load()
          continue;
       }
 
-      node = doc->xmlChildrenNode; /* first planet node */
+      node = doc->xmlChildrenNode; /* first attribute node */
       if (node == NULL) {
          WARN("Malformed %s file: does not contain elements",file);
          continue;
@@ -1524,6 +1554,7 @@ static int attributes_load()
 
       if (xml_isNode(node,XML_ATTRIBUTE_TAG)) {
          attribute_parse( &attribute_stack[i], node );
+         attribute_nstack++;
       }
 
    }
@@ -1796,11 +1827,13 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
    char str[PATH_MAX], *tmp;
    xmlNodePtr node, cur, ccur;
    unsigned int flags;
+   int attr;
 
    /* Clear up memory for sane defaults. */
    flags          = 0;
    planet->real   = ASSET_REAL;
    planet->hide   = 0.01;
+   planet->attributes = malloc(attribute_nstack * sizeof(int));
 
    /* Get the name. */
    xmlr_attr( parent, "name", planet->name );
@@ -1920,6 +1953,18 @@ static int planet_parse( Planet *planet, const xmlNodePtr parent )
       }
       else if (xml_isNode(node, "tech")) {
          planet->tech = tech_groupCreateXML( node );
+         continue;
+      }
+      else if (xml_isNode(node, "attributes")) {
+         cur = node->children;
+         do {
+            if (xml_isNode(cur, "attribute")) {
+               xmlr_attr( cur, "name", tmp );
+               attr = attribute_get(tmp);
+               if (attr >= 0)
+                  planet->attributes[attr] = xml_getInt(cur);
+            }
+         } while (xml_nextNode(cur));
          continue;
       }
 
