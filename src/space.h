@@ -61,6 +61,12 @@ typedef enum PlanetClass_ {
    STATION_CLASS_D   /**< Robotic Station */
 } PlanetClass;
 
+typedef struct Attribute_ {
+   char *name;
+   char *desc;
+   int amount;
+} Attribute;
+
 /*
  * planet services
  */
@@ -106,6 +112,7 @@ typedef struct Planet_ {
    int presenceRange; /**< The range of presence exertion of this asset. */
    int real; /**< If the asset is tangible or not. */
    double hide; /**< The ewarfare hide value for an asset. */
+   Attribute *attributes; /**< The planets environment attributes. */
 
    /* Landing details. */
    int land_override; /**< Forcibly allows the player to either be able to land or not (+1 is land, -1 is not, 0 otherwise). */

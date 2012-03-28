@@ -29,6 +29,7 @@
 #define SPFX_DATA_PATH           "dat/spfx.xml" /**< Location of the spfx datafile. */
 #define DTYPE_DATA_PATH          "dat/damagetype.xml" /**< Location of the spfx datafile. */
 #define COMMODITY_DATA_PATH      "dat/commodity.xml" /**< Commodity XML file. */
+#define ATTRIBUTE_DATA_PATH      "dat/attributes/" /**< Folder containing attribute data */
 #define FLEET_DATA_PATH          "dat/fleet.xml" /**< Where to find fleet data. */
 #define TECH_DATA_PATH           "dat/tech.xml"   /**< XML file containing techs. */
 #define DIFF_DATA_PATH           "dat/unidiff.xml" /**< Unidiff XML file. */

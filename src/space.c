@@ -58,6 +58,8 @@
 #define XML_SYSTEM_ID         "Systems" /**< Systems xml document tag. */
 #define XML_SYSTEM_TAG        "ssys" /**< Individual systems xml tag. */
 
+#define XML_ATTRIBUTE_TAG     "attribute" /**< Individual attribute xml tag. */
+
 #define PLANET_GFX_EXTERIOR_PATH_W 400 /**< Planet exterior graphic width. */
 #define PLANET_GFX_EXTERIOR_PATH_H 400 /**< Planet exterior graphic height. */
 
@@ -94,6 +96,13 @@ static int systems_mstack = 0; /**< Number of memory allocated for star system s
 Planet *planet_stack = NULL; /**< Planet stack. */
 int planet_nstack = 0; /**< Planet stack size. */
 static int planet_mstack = 0; /**< Memory size of planet stack. */
+
+/*
+ * Attribute stack.
+ */
+Attribute *attribute_stack = NULL; /**< Attribute stack. */
+int attribute_nstack = 0; /**< Attribute stack size. */
+static int attribute_mstack = 0; /**< Memory size of attribute stack. */
 
 /*
  * Misc.
@@ -1454,6 +1463,80 @@ Planet *planet_new (void)
    return p;
 }
 
+static int attribute_parse( Attribute *a, xmlNodePtr parent)
+{
+   xmlNodePtr node;
+
+   /* Get the name. */
+   xmlr_attr( parent, "name", a->name );
+
+   node = parent->xmlChildrenNode;
+   do {
+
+      /* Only handle nodes. */
+      xml_onlyNodes(node);
+
+      if (xml_isNode(node,"desc")) {
+         xmlr_strd(node, "desc", a->desc );
+         continue;
+      }
+
+      DEBUG("Unknown node '%s' in attribute '%s'",node->name,a->name);
+   } while (xml_nextNode(node));
+
+   return 0;
+}
+
+static int attributes_load()
+{
+ uint32_t bufsize;
+   char *buf, **attribute_files, *file;
+   xmlNodePtr node;
+   xmlDocPtr doc;
+   uint32_t nfiles;
+   int i;
+
+   /* Initialize stack if needed. */
+   if (attribute_stack == NULL) {
+      attribute_mstack = CHUNK_SIZE;
+      attribute_stack = malloc( sizeof(Planet) * attribute_mstack );
+      attribute_nstack = 0;
+   }
+
+   /* Load XML stuff. */
+   attribute_files = ndata_list( ATTRIBUTE_DATA_PATH, &nfiles );
+   for ( i = 0; i < (int)nfiles; i++ ) {
+
+      file = malloc((strlen(ATTRIBUTE_DATA_PATH)+strlen(attribute_files[i])+2)*sizeof(char));
+      nsnprintf(file,(strlen(ATTRIBUTE_DATA_PATH)+strlen(attribute_files[i])+2)*sizeof(char),"%s%s",ATTRIBUTE_DATA_PATH,attribute_files[i]);
+      buf = ndata_read( file, &bufsize );
+      doc = xmlParseMemory( buf, bufsize );
+      if (doc == NULL) {
+         WARN("%s file is invalid xml!",file);
+         continue;
+      }
+
+      node = doc->xmlChildrenNode; /* first planet node */
+      if (node == NULL) {
+         WARN("Malformed %s file: does not contain elements",file);
+         continue;
+      }
+
+      if (xml_isNode(node,XML_ATTRIBUTE_TAG)) {
+         attribute_parse( &attribute_stack[i], node );
+      }
+
+   }
+
+   /*
+    * free stuff
+    */
+   xmlFreeDoc(doc);
+   free(buf);
+
+   return 0;
+}
+
 
 /**
  * @brief Loads all the planets in the game.
@@ -1470,6 +1553,8 @@ static int planets_load ( void )
    lua_State *L;
    uint32_t nfiles;
    int i;
+
+   attributes_load();
 
    /* Load landing stuff. */
    landing_lua = nlua_newState();

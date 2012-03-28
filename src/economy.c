@@ -359,12 +359,12 @@ credits_t economy_getPrice( const Commodity *com,
    k = com - commodity_stack;
 
    /* Find what commodity that is. */
-   for (i=0; i<econ_nprices; i++)
-      if (econ_comm[i] == k)
+   for (i=0; i<p->ncommodities; i++)
+      if (strcmp(p->commodities[i].name, com->name) == 0)
          break;
 
    /* Check if found. */
-   if (i >= econ_nprices) {
+   if (i >= p->ncommodities) {
       WARN("Price for commodity '%s' not known.", com->name);
       return 0;
    }
