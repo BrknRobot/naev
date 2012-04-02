@@ -463,7 +463,7 @@ static double econ_calcSysI( unsigned int dt, StarSystem *sys, int commodity )
          /* We base off the current production. */
          prodfactor  = planet->commodities[commodity].supply;
          /* Add a variability factor based on the Gaussian distribution. */
-         prodfactor += ECON_PROD_VAR * RNG_2SIGMA() * ddt;
+         prodfactor += ECON_PROD_VAR * ddt;
          /* Add a tendency to return to the planet's base production. */
          prodfactor -= ECON_PROD_VAR * (supply - prodfactor)*ddt;
          /* Save for next iteration. */
@@ -477,7 +477,7 @@ static double econ_calcSysI( unsigned int dt, StarSystem *sys, int commodity )
          /* We base off the current demand. */
          demandfactor  = planet->commodities[commodity].demand;
          /* Add a variability factor based on the Gaussian distribution. */
-         demandfactor += ECON_DEMAND_VAR * RNG_2SIGMA() * ddt;
+         demandfactor += ECON_DEMAND_VAR * ddt;
          /* Add a tendency to return to the planet's base demand. */
          demandfactor -= ECON_DEMAND_VAR * (demand - demandfactor)*ddt;
          /* Save for next iteration. */
