@@ -49,11 +49,13 @@
 #define ECON_FACTION_MOD   0.1 /**< Modifier on Base for faction standings. */
 #define ECON_PROD_MODIFIER 500000. /**< Production modifier, divide production by this amount. */
 #define ECON_PROD_VAR      0.01 /**< Defines the variability of production. */
+#define ECON_DEMAND_VAR      0.01 /**< Defines the variability of demand. */
 
+#define ECONOMY_POWER_BASE    1.1 /**< The base value for commodity price calculations. Must be greater than 1. */
 
 /* commodity stack */
-static Commodity* commodity_stack = NULL; /**< Contains all the commodities. */
-static int commodity_nstack       = 0; /**< Number of commodities in the stack. */
+Commodity* commodity_stack = NULL; /**< Contains all the commodities. */
+int commodity_nstack       = 0; /**< Number of commodities in the stack. */
 
 /* systems stack. */
 extern StarSystem *systems_stack; /**< Star system stack. */
@@ -68,8 +70,6 @@ extern int planet_nstack; /**< Number of star systems. */
  * Nodal analysis simulation for dynamic economies.
  */
 static int econ_initialized   = 0; /**< Is economy system initialized? */
-static int *econ_comm         = NULL; /**< Commodities to calculate. */
-static int econ_nprices       = 0; /**< Number of prices to calculate. */
 static cs *econ_G             = NULL; /**< Admittance matrix. */
 
 
@@ -328,7 +328,7 @@ int commodity_load (void)
  */
 void commodity_free (void)
 {
-   int i;
+   int i,j;
    for (i=0; i<commodity_nstack; i++)
       commodity_freeOne( &commodity_stack[i] );
    free( commodity_stack );
@@ -336,7 +336,11 @@ void commodity_free (void)
    commodity_nstack = 0;
 
    /* More clean up. */
-   free( econ_comm );
+   for (i=0; i<planet_nstack; i++) {
+      for (j=0; j<commodity_nstack; j++)
+         commodity_freeOne( &planet_stack[i].commodities[j] );
+      free( planet_stack[i].commodities );
+   }
 }
 
 
@@ -352,26 +356,22 @@ credits_t economy_getPrice( const Commodity *com,
       const StarSystem *sys, const Planet *p )
 {
    (void) sys;
-   int i, k;
+   int i;
    double price;
 
-   /* Get position in stack. */
-   k = com - commodity_stack;
-
    /* Find what commodity that is. */
-   for (i=0; i<p->ncommodities; i++)
+   for (i=0; i<commodity_nstack; i++)
       if (strcmp(p->commodities[i].name, com->name) == 0)
          break;
 
    /* Check if found. */
-   if (i >= p->ncommodities) {
+   if (i >= commodity_nstack) {
       WARN("Price for commodity '%s' not known.", com->name);
       return 0;
    }
 
    /* Calculate price. */
-   price  = (double) com->price;
-   price *= p->commodities[i].price;
+   price = p->commodities[i].price;
    return (credits_t) price;
 }
 
@@ -413,48 +413,84 @@ static double econ_calcJumpR( StarSystem *A, StarSystem *B )
  *
  * @todo Make it time/item dependent.
  */
-static double econ_calcSysI( unsigned int dt, StarSystem *sys, int price )
+static double econ_calcSysI( unsigned int dt, StarSystem *sys, int commodity )
 {
-   (void) dt;
-   (void) sys;
-   (void) price;
-   return 0.;
-#if 0
    int i;
    double I;
    double prodfactor, p;
+   double demandfactor, d;
+   double supply, demand;
    double ddt;
    Planet *planet;
+   lua_State *L;
+   int errf=0;
 
-   ddt = (double)(dt / NTIME_UNIT_LENGTH);
+   L = commodity_stack[commodity].lua;
+
+   if (L == NULL)
+      return 0;
+
+//   ddt = (double)(dt / NTIME_UNIT_LENGTH);
+   ddt = dt;
 
    /* Calculate production level. */
    p = 0.;
    for (i=0; i<sys->nplanets; i++) {
       planet = sys->planets[i];
       if (planet_hasService(planet, PLANET_SERVICE_INHABITED)) {
+
+         lua_getglobal( L, "calc_supplyDemand" );      /* f */
+//         lua_pushnumber(L,planet_stack[j].
+
+         /* run lua supply/demand script */
+         lua_pcall(L, 0, 2, errf);
+         supply = 0;
+         demand = 0;
+         if (lua_isnumber(L,-1) && lua_isnumber(L,-2)) { /* supply, demand */
+            demand = lua_tonumber(L,-1);
+            supply = lua_tonumber(L,-2);
+         }
+         lua_pop(L,-1);
+         lua_pop(L,-2);
+
+         /* Supply and demand may not be negative. */
+         supply = MAX(0, supply);
+         demand = MAX(0, demand);
+
          /*
           * Calculate production.
           */
          /* We base off the current production. */
-         prodfactor  = planet->cur_prodfactor;
+         prodfactor  = planet->commodities[commodity].supply;
          /* Add a variability factor based on the Gaussian distribution. */
          prodfactor += ECON_PROD_VAR * RNG_2SIGMA() * ddt;
          /* Add a tendency to return to the planet's base production. */
-         prodfactor -= ECON_PROD_VAR *
-               (planet->cur_prodfactor - prodfactor)*ddt;
+         prodfactor -= ECON_PROD_VAR * (supply - prodfactor)*ddt;
          /* Save for next iteration. */
-         planet->cur_prodfactor = prodfactor;
+         planet->commodities[commodity].supply = prodfactor;
          /* We base off the sqrt of the population otherwise it changes too fast. */
          p += prodfactor * sqrt(planet->population);
+
+         /*
+          * Calculate demand.
+          */
+         /* We base off the current demand. */
+         demandfactor  = planet->commodities[commodity].demand;
+         /* Add a variability factor based on the Gaussian distribution. */
+         demandfactor += ECON_DEMAND_VAR * RNG_2SIGMA() * ddt;
+         /* Add a tendency to return to the planet's base demand. */
+         demandfactor -= ECON_DEMAND_VAR * (demand - demandfactor)*ddt;
+         /* Save for next iteration. */
+         planet->commodities[commodity].demand = demandfactor;
+         /* We base off the sqrt of the population otherwise it changes too fast. */
+         d += demandfactor * sqrt(planet->population);
       }
    }
 
    /* The intensity is basically the modified production. */
-   I = p / ECON_PROD_MODIFIER;
+   I = pow(ECONOMY_POWER_BASE, demandfactor - prodfactor);
 
    return I;
-#endif
 }
 
 
@@ -531,19 +567,11 @@ int economy_init (void)
       return 0;
 
    /* Allocate price space. */
-   for (i=0; i<commodity_nstack; i++) {
-      if (commodity_stack[i].lua == NULL)
-         continue;
-      for (j=0; j<planet_nstack; j++) {
-         /* See if must grow memory.  */
-         planet_stack[j].ncommodities++;
-         if (planet_stack[j].ncommodities > planet_stack[j].mcommodities) {
-            planet_stack[j].mcommodities++;
-            planet_stack[j].commodities = realloc(planet_stack[j].commodities, sizeof(Commodity)*planet_stack[j].mcommodities);
-         }
+   for (i=0; i<planet_nstack; i++) {
+      planet_stack[i].commodities = malloc(commodity_nstack * sizeof(Commodity));
 
-         planet_stack[j].commodities[planet_stack[j].ncommodities-1] = commodity_stack[i];
-      }
+      for (j=0; j<commodity_nstack; j++)
+         planet_stack[i].commodities[j] = commodity_stack[j];
    }
 
    /* Mark economy as initialized. */
@@ -586,6 +614,7 @@ int economy_update( unsigned int dt )
 {
    int ret;
    int i, j;
+   double min, max;
    double *X;
    double scale, offset;
    /*double min, max;*/
@@ -602,7 +631,10 @@ int economy_update( unsigned int dt )
    }
 
    /* Calculate the results for each price set. */
-   for (j=0; j<econ_nprices; j++) {
+   for (j=0; j<commodity_nstack; j++) {
+
+      if (commodity_stack[j].lua == NULL)
+         continue;
 
       /* First we must load the vector with intensities. */
       for (i=0; i<systems_nstack; i++)
@@ -623,7 +655,6 @@ int economy_update( unsigned int dt )
       /*
        * Get the minimum and maximum to scale.
        */
-      /*
       min = +HUGE_VALF;
       max = -HUGE_VALF;
       for (i=0; i<systems_nstack; i++) {
@@ -634,17 +665,14 @@ int economy_update( unsigned int dt )
       }
       scale = 1. / (max - min);
       offset = 0.5 - min * scale;
-      */
 
       /*
        * I'm not sure I like the filtering of the results, but it would take
        * much more work to get a sane system working without the need of post
        * filtering.
        */
-      scale    = 1.;
-      offset   = 1.;
       for (i=0; i<systems_nstack; i++)
-         planet_stack[i].commodities[j].price = X[i] * scale + offset;
+         planet_stack[i].commodities[j].price = planet_stack[i].commodities[j].base_price * (X[i] * scale + offset);
    }
 
    /* Clean up. */
@@ -670,7 +698,6 @@ void economy_destroy (void)
       if (planet_stack[i].commodities != NULL) {
          free(planet_stack[i].commodities);
          planet_stack[i].commodities = NULL;
-         planet_stack[i].ncommodities = 0;
       }
    }
 

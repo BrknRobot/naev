@@ -212,11 +212,11 @@ static void commodity_exchange_open( unsigned int wid )
          "txtDesc", &gl_smallFont, &cBlack, NULL );
 
    /* goods list */
-   if (land_planet->ncommodities > 0) {
-      goods = malloc(sizeof(char*) * land_planet->ncommodities);
-      for (i=0; i<land_planet->ncommodities; i++)
+   if (commodity_nstack > 0) {
+      goods = malloc(sizeof(char*) * commodity_nstack);
+      for (i=0; i<commodity_nstack; i++)
          goods[i] = strdup(land_planet->commodities[i].name);
-      ngoods = land_planet->ncommodities;
+      ngoods = commodity_nstack;
    }
    else {
       goods    = malloc( sizeof(char*) );

@@ -20,7 +20,6 @@
 #include "nfile.h"
 #include "nstring.h"
 
-
 /**
  * @brief Saves a planet.
  *
@@ -109,7 +108,7 @@ int dpl_savePlanet( const Planet *p )
       xmlw_endElem( writer ); /* "services" */
       if (planet_hasService( p, PLANET_SERVICE_LAND )) {
          xmlw_startElem( writer, "commodities" );
-         for (i=0; i<p->ncommodities; i++)
+         for (i=0; i<commodity_nstack; i++)
             xmlw_elem( writer, "commodity", "%s", p->commodities[i].name );
          xmlw_endElem( writer ); /* "commodities" */
          xmlw_elem( writer, "description", "%s", p->description );

@@ -127,8 +127,6 @@ typedef struct Planet_ {
    char* bar_description; /**< spaceport bar description */
    unsigned int services; /**< what services they offer */
    Commodity *commodities; /**< what commodities they sell */
-   int ncommodities; /**< the amount they have */
-   int mcommodities; /**< how many commodities we have memory for */
    tech_group_t *tech; /**< Planet tech. */
 
    /* Graphics. */

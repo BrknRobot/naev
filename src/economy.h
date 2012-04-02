@@ -15,7 +15,6 @@
 
 #define ECON_CRED_STRLEN      32 /**< Maximum length a credits2str string can reach. */
 
-
 typedef int64_t credits_t;
 #define CREDITS_MAX        INT64_MAX
 #define CREDITS_MIN        INT64_MIN
@@ -37,6 +36,9 @@ typedef struct Commodity_ {
    double price; /**< Actual price of the commodity. */
 } Commodity;
 
+/* commodity stack */
+Commodity* commodity_stack; /**< Contains all the commodities. */
+int commodity_nstack; /**< Number of commodities in the stack. */
 
 /*
  * Commodity stuff.
