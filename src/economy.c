@@ -47,7 +47,6 @@
 #define ECON_BASE_RES      30. /**< Base resistance value for any system. */
 #define ECON_SELF_RES      3. /**< Additional resistance for the self node. */
 #define ECON_FACTION_MOD   0.1 /**< Modifier on Base for faction standings. */
-#define ECON_PROD_MODIFIER 500000. /**< Production modifier, divide production by this amount. */
 #define ECON_PROD_VAR      0.01 /**< Defines the variability of production. */
 #define ECON_DEMAND_VAR      0.01 /**< Defines the variability of demand. */
 
@@ -621,10 +620,9 @@ int economy_update()
    int ret;
    int i, j, k;
    ntime_t dt;
-   double min, max;
    double *X;
    double scale, offset;
-   /*double min, max;*/
+   double min, max;
 
    /* Economy must be initialized. */
    if (econ_initialized == 0)
