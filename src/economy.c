@@ -71,7 +71,7 @@ extern int planet_nstack; /**< Number of star systems. */
 static int econ_initialized   = 0; /**< Is economy system initialized? */
 static cs *econ_G             = NULL; /**< Admittance matrix. */
 
-static int econ_lastUpdate; /**< The last time the economy was updated. */
+static ntime_t econ_lastUpdate; /**< The last time the economy was updated. */
 
 
 /*
@@ -414,7 +414,7 @@ static double econ_calcJumpR( StarSystem *A, StarSystem *B )
  *
  * @todo Make it time/item dependent.
  */
-static double econ_calcSysI( unsigned int dt, StarSystem *sys, int commodity )
+static double econ_calcSysI( ntime_t dt, StarSystem *sys, int commodity )
 {
    int i;
    double I;
@@ -489,7 +489,7 @@ static double econ_calcSysI( unsigned int dt, StarSystem *sys, int commodity )
    }
 
    /* The intensity is basically the modified production. */
-   I = pow(ECONOMY_POWER_BASE, demandfactor - prodfactor);
+   I = pow(ECONOMY_POWER_BASE, (demandfactor - prodfactor)/(ddt+1));
 
    return I;
 }
@@ -578,6 +578,8 @@ int economy_init (void)
    /* Mark economy as initialized. */
    econ_initialized = 1;
 
+   econ_lastUpdate = 0;
+
    /* Refresh economy. */
    economy_refresh();
 
@@ -613,7 +615,7 @@ int economy_update()
 {
    int ret;
    int i, j;
-   int dt;
+   ntime_t dt;
    double min, max;
    double *X;
    double scale, offset;
