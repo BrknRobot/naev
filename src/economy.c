@@ -436,6 +436,7 @@ static double econ_calcSysI( ntime_t dt, StarSystem *sys, int commodity )
 
    /* Calculate production level. */
    p = 0.;
+   d = 0.;
    for (i=0; i<sys->nplanets; i++) {
       planet = sys->planets[i];
       if (planet_hasService(planet, PLANET_SERVICE_INHABITED)) {
@@ -445,11 +446,15 @@ static double econ_calcSysI( ntime_t dt, StarSystem *sys, int commodity )
 
          /* run lua supply/demand script */
          lua_pcall(L, 0, 2, errf);
-         supply = 0;
-         demand = 0;
+
+         /* Get return values */
          if (lua_isnumber(L,-1) && lua_isnumber(L,-2)) { /* supply, demand */
             demand = lua_tonumber(L,-1);
             supply = lua_tonumber(L,-2);
+         }
+         else {
+            demand = 0;
+            supply = 0;
          }
          lua_pop(L,-1);
          lua_pop(L,-2);
@@ -470,7 +475,7 @@ static double econ_calcSysI( ntime_t dt, StarSystem *sys, int commodity )
          /* Save for next iteration. */
          planet->commodities[commodity].supply = prodfactor;
          /* We base off the sqrt of the population otherwise it changes too fast. */
-         p += prodfactor * sqrt(planet->population);
+         p += prodfactor;
 
          /*
           * Calculate demand.
@@ -484,12 +489,12 @@ static double econ_calcSysI( ntime_t dt, StarSystem *sys, int commodity )
          /* Save for next iteration. */
          planet->commodities[commodity].demand = demandfactor;
          /* We base off the sqrt of the population otherwise it changes too fast. */
-         d += demandfactor * sqrt(planet->population);
+         d += demandfactor;
       }
    }
 
    /* The intensity is basically the modified production. */
-   I = pow(ECONOMY_POWER_BASE, (demandfactor - prodfactor)/(ddt+1));
+   I = pow(ECONOMY_POWER_BASE, (d - p) / (ddt + 1));
 
    return I;
 }
