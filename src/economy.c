@@ -65,12 +65,13 @@ extern int systems_nstack; /**< Number of star systems. */
 extern Planet *planet_stack; /**< Star system stack. */
 extern int planet_nstack; /**< Number of star systems. */
 
-
 /*
  * Nodal analysis simulation for dynamic economies.
  */
 static int econ_initialized   = 0; /**< Is economy system initialized? */
 static cs *econ_G             = NULL; /**< Admittance matrix. */
+
+static int econ_lastUpdate; /**< The last time the economy was updated. */
 
 
 /*
@@ -599,7 +600,7 @@ int economy_refresh (void)
       return -1;
 
    /* Initialize the prices. */
-   economy_update( 0 );
+   economy_update();
 
    return 0;
 }
@@ -607,13 +608,12 @@ int economy_refresh (void)
 
 /**
  * @brief Updates the economy.
- *
- *    @param dt Deltatick in NTIME.
  */
-int economy_update( unsigned int dt )
+int economy_update()
 {
    int ret;
    int i, j;
+   int dt;
    double min, max;
    double *X;
    double scale, offset;
@@ -622,6 +622,9 @@ int economy_update( unsigned int dt )
    /* Economy must be initialized. */
    if (econ_initialized == 0)
       return 0;
+
+   dt = ntime_get() - econ_lastUpdate;
+   econ_lastUpdate = ntime_get();
 
    /* Create the vector to solve the system. */
    X = malloc(sizeof(double)*systems_nstack);
