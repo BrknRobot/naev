@@ -614,7 +614,7 @@ int economy_refresh (void)
 int economy_update()
 {
    int ret;
-   int i, j;
+   int i, j, k;
    ntime_t dt;
    double min, max;
    double *X;
@@ -677,7 +677,8 @@ int economy_update()
        * filtering.
        */
       for (i=0; i<systems_nstack; i++)
-         planet_stack[i].commodities[j].price = planet_stack[i].commodities[j].base_price * (X[i] * scale + offset);
+         for (k=0; k<systems_stack[i].nplanets; k++)
+            systems_stack[i].planets[k]->commodities[j].price = planet_stack[i].commodities[j].base_price * (X[i] * scale + offset);
    }
 
    /* Clean up. */
