@@ -51,6 +51,7 @@
 #include "damagetype.h"
 #include "hook.h"
 #include "dev_uniedit.h"
+#include "quadtree.h"
 
 
 #define XML_PLANET_TAG        "asset" /**< Individual planet xml tag. */
@@ -1319,13 +1320,14 @@ void space_init( const char* sysname )
    Planet *pnt;
 
    /* cleanup some stuff */
-   player_clear(); /* clears targets */
-   ovr_mrkClear(); /* Clear markers when jumping. */
-   pilots_clean(); /* destroy all the current pilots, except player */
-   weapon_clear(); /* get rid of all the weapons */
-   spfx_clear(); /* get rid of the explosions */
+   player_clear();     /* clears targets */
+   ovr_mrkClear();     /* Clear markers when jumping. */
+   pilots_clean();     /* destroy all the current pilots, except player */
+   weapon_clear();     /* get rid of all the weapons */
+   spfx_clear();       /* get rid of the explosions */
    background_clear(); /* Get rid of the background. */
-   space_spawn = 1; /* spawn is enabled by default. */
+   quadtree_reset();   /* Clear the quadtree and make a new one */
+   space_spawn = 1;    /* spawn is enabled by default. */
    interference_timer = 0.; /* Restart timer. */
    if (player.p != NULL) {
       pilot_lockClear( player.p );

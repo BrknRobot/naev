@@ -88,6 +88,41 @@ typedef struct Faction_ {
    unsigned int flags; /**< Flags affecting the faction. */
 } Faction;
 
+typedef struct SubFaction_ {
+   char *name; /**< Normal Name. */
+   char *longname; /**< Long Name. */
+   char *displayname; /**< Display name. */
+
+   /* Graphics. */
+   glTexture *logo_small; /**< Small logo. */
+   glTexture *logo_tiny; /**< Tiny logo. */
+   const glColour *colour; /**< Faction specific colour. */
+
+   /* Enemies */
+   int *enemies; /**< Enemies by ID of the faction. */
+   int nenemies; /**< Number of enemies. */
+
+   /* Allies */
+   int *allies; /**< Allies by ID of the faction. */
+   int nallies; /**< Number of allies. */
+
+   /* Player information. */
+   double player_def; /**< Default player standing. */
+   double player; /**< Standing with player - from -100 to 100 */
+
+   /* Scheduler. */
+   lua_State *sched_state; /**< Lua scheduler script. */
+
+   /* Behaviour. */
+   lua_State *state; /**< Faction specific state. */
+
+   /* Equipping. */
+   lua_State *equip_state; /**< Faction equipper state. */
+
+   /* Flags. */
+   unsigned int flags; /**< Flags affecting the faction. */
+} SubFaction;
+
 static Faction* faction_stack = NULL; /**< Faction stack. */
 int faction_nstack = 0; /**< Number of factions in the faction stack. */
 

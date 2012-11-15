@@ -5,7 +5,7 @@
 
 
 #ifndef WEAPON_H
-#  define WEAPON__H
+#  define WEAPON_H
 
 
 #include "outfit.h"
@@ -20,6 +20,41 @@
  */
 typedef enum { WEAPON_LAYER_BG, WEAPON_LAYER_FG } WeaponLayer;
 
+/**
+ * @struct Weapon
+ *
+ * @brief In-game representation of a weapon.
+ */
+typedef struct Weapon_ {
+   Solid *solid; /**< Actually has its own solid :) */
+   unsigned int ID; /**< Only used for beam weapons. */
+
+   int faction; /**< faction of pilot that shot it */
+   unsigned int parent; /**< pilot that shot it */
+   unsigned int target; /**< target to hit, only used by seeking things */
+   const Outfit* outfit; /**< related outfit that fired it or whatnot */
+
+   double real_vel; /**< Keeps track of the real velocity. */
+   double jam_power; /**< Power being jammed by. */
+   double dam_mod; /**< Damage modifier. */
+   int voice; /**< Weapon's voice. */
+   double exp_timer; /**< Explosion timer for beams. */
+   double life; /**< Total life. */
+   double timer; /**< mainly used to see when the weapon was fired */
+   double anim; /**< Used for beam weapon graphics and others. */
+   int sprite; /**< Used for spinning outfits. */
+   const PilotOutfitSlot *mount; /**< Used for beam weapons. */
+   double falloff; /**< Point at which damage falls off. */
+   double strength; /**< Calculated with falloff. */
+   int sx; /**< Current X sprite to use. */
+   int sy; /**< Current Y sprite to use. */
+
+   /* position update and render */
+   void (*update)(struct Weapon_*, const double, WeaponLayer); /**< Updates the weapon */
+   void (*think)(struct Weapon_*, const double); /**< for the smart missiles */
+
+   char status; /**< Weapon status - to check for jamming */
+} Weapon;
 
 /*
  * addition
