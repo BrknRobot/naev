@@ -1,5 +1,7 @@
 #include "quadtree.h"
 
+#define QUADRENT_SIZE 10000.0
+
 typedef struct Node_ Node;
 typedef struct LinkedList_ LinkedList;
 
@@ -19,8 +21,8 @@ struct LinkedList_
 struct Node_
 {
    /* bounds */
-   int x;
-   int y;
+   double x, xMax, xMin;
+   double y, yMax, yMin;
 
    /* contained objects */
    LinkedList* pilots;
@@ -37,9 +39,9 @@ struct Node_
 
 Node* top;
 
-Node* createNode(int x, int y);
+Node* createNode(double x, double y);
 
-Node* createNode(int x, int y)
+Node* createNode(double x, double y)
 {
    Node* node;
 
@@ -52,6 +54,11 @@ Node* createNode(int x, int y)
    node->weapons = malloc(sizeof(LinkedList));
    node->planets = malloc(sizeof(LinkedList));
    node->jumps = malloc(sizeof(LinkedList));
+
+   node->nw = NULL;
+   node->ne = NULL;
+   node->sw = NULL;
+   node->se = NULL;
 
    return node;
 }
@@ -80,31 +87,48 @@ int quadtree_addWeapon(Weapon* weapon)
    glTexture* gfx;
    LinkedList* weaponNode;
    int added = 0;
+   int quadrentSizeDiv;
 
    cur = top;
+   quadrentSizeDiv = 1;
 
    gfx = outfit_gfx(weapon->outfit);
 
    while (!added) {
-      /* Colides with bounderies. Place in this node */
-      if (!(weapon->solid->pos.x - gfx->sw/2 < cur->x || weapon->solid->pos.x + gfx->sw/2 > cur->x ||
-            weapon->solid->pos.y - gfx->sh/2 < cur->y || weapon->solid->pos.y + gfx->sh/2 > cur->y)) {
+      /* Colides with child bounderies. Place in this node */
+      if ((weapon->solid->pos.x - gfx->sw/2 < cur->x && weapon->solid->pos.x + gfx->sw/2 > cur->x) ||
+            (weapon->solid->pos.y - gfx->sh/2 < cur->y && weapon->solid->pos.y + gfx->sh/2 > cur->y)) {
          weaponNode = malloc(sizeof(LinkedList));
          weaponNode->u.weapon = weapon;
          weaponNode->next = cur->weapons->next;
          cur->weapons->next = weaponNode;
          added = 1;
       }
-      else if (weapon->solid->pos.x > cur->x) {
-         if (weapon->solid->pos.y > cur->y)
-            cur = cur->ne;
-         else
-            cur = cur->se;
+      else {
+         if (weapon->solid->pos.x > cur->x) {
+            if (weapon->solid->pos.y > cur->y) {
+               if (cur->ne == NULL)
+                  cur->ne = createNode(cur->x + QUADRENT_SIZE/quadrentSizeDiv, cur->y + QUADRENT_SIZE/quadrentSizeDiv);
+               cur = cur->ne;
+            }
+            else {
+               if (cur->se == NULL)
+                  cur->se = createNode(cur->x + QUADRENT_SIZE/quadrentSizeDiv, cur->y - QUADRENT_SIZE/quadrentSizeDiv);
+               cur = cur->se;
+            }
+         }
+         else if (weapon->solid->pos.y > cur->y) {
+            if (cur->nw == NULL)
+               cur->nw = createNode(cur->x - QUADRENT_SIZE/quadrentSizeDiv, cur->y + QUADRENT_SIZE/quadrentSizeDiv);
+            cur = cur->nw;
+         }
+         else {
+            if (cur->sw == NULL)
+               cur->sw = createNode(cur->x - QUADRENT_SIZE/quadrentSizeDiv, cur->y - QUADRENT_SIZE/quadrentSizeDiv);
+            cur = cur->sw;
+         }
+         quadrentSizeDiv *= 2;
       }
-      else if (weapon->solid->pos.y > cur->y)
-         cur = cur->nw;
-      else
-         cur = cur->sw;
    }
 
    return added;
