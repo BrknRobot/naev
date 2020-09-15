@@ -16,6 +16,7 @@ echo $GIT_REV
 
 RELEASE_VERSION=$(git describe --tags)
 
+./autogen.sh
 ./configure prefix=/usr/
 make install DESTDIR=$HOME/$APP/$APP.AppDir
 
