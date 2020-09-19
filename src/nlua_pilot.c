@@ -484,7 +484,7 @@ static int pilotL_addFleetFrom( lua_State *L, int from_ship )
       ss = system_getIndex( lua_tosystem(L,3) );
       for (i=0; i<cur_system->njumps; i++) {
          if ((cur_system->jumps[i].target == ss)
-               && !jp_isFlag( jump_getTarget( cur_system, cur_system->jumps[i].target ), JP_EXITONLY )) {
+               && !jp_isFlag( cur_system->jumps[i].returnJump, JP_EXITONLY )) {
             jump = i;
             break;
          }
@@ -962,7 +962,7 @@ static int pilotL_inrange( lua_State *L )
    t = luaL_validpilot(L,2);
 
    /* Check if in range. */
-   ret = pilot_inRangePilot( p, t );
+   ret = pilot_inRangePilot( p, t, NULL );
    if (ret == 1) { /* In range. */
       lua_pushboolean(L,1);
       lua_pushboolean(L,1);
