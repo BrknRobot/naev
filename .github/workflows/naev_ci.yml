@@ -2,21 +2,46 @@ on: [push, pull_request]
 
 name: CI
 
+env:
+  CC: clang
+
 jobs:
-  "Linux-x86_64":
+  dist:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update APT Cache
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+
+    - name: Checkout Naev Repository 
+      uses: actions/checkout@v2
+
+    - name: Meson Build
+      run: |
+        meson setup builddir -Dconfigure_build=false -Dconfigure_doc=false
+        meson dist -C builddir --no-tests
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+        path: ${{ github.workspace }}/builddir/meson-dist/*
+        if-no-files-found: error
+
+  "Linux-x86_64":
+    needs: dist
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update APT Build Dependencies
       run: |
         sudo apt-get update
-
-    - name: Install Additional Build Dependencies
-      run: |
         sudo apt-get install \
           build-essential \
-          automake \
-          autoconf-archive \
           libsdl2-dev \
           libsdl2-mixer-dev \
           libsdl2-image-dev \
@@ -33,29 +58,43 @@ jobs:
           libluajit-5.1-dev \
           gettext \
           autopoint \
-          intltool \
-          itstool
+          intltool
 
-    - name: Checkout Naev Repository 
-      uses: actions/checkout@v2
+    - name: Setup Python
+      uses: actions/setup-python@v2
 
-    - name: Test-Build Naev on Linux64
+    - name: Install Meson
       run: |
-        ./autogen.sh
-        ./configure --build=x86_64-linux-gnu --host=x86_64-linux-gnu
-        make -j$(nproc --all)
-      env:
-        CFLAGS: "-O3"
+        pip install meson ninja
+
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --buildtype release \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_doc=false
+        meson install -C build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: naev-lin64-${{ github.sha }}
-        path: ${{ github.workspace }}/src/naev
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
 
   "Windows-MinGW64":
+    needs: dist
     runs-on: windows-latest
-
     defaults:
       run:
         shell: msys2 {0}
@@ -66,26 +105,35 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-libtool mingw-w64-x86_64-toolchain mingw-w64-x86_64-gcc mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-libxml2 mingw-w64-x86_64-libpng mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-binutils mingw-w64-x86_64-fontconfig mingw-w64-x86_64-freetype mingw-w64-x86_64-libzip mingw-w64-x86_64-gettext mingw-w64-x86_64-luajit libtool autoconf autoconf-archive automake automake-wrapper git gettext pkgconfig make intltool itstool
+        install: mingw-w64-x86_64-meson mingw-w64-x86_64-ninja mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
-    - name: Checkout Naev Repository 
-      uses: actions/checkout@v2
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
 
-    - name: Test-Build Naev on Win64
+    - name: Extract Source
       run: |
-        ./autogen.sh
-        ./configure
-        make -j$(nproc --all)
-      env:
-        CFLAGS: "-O3"
-    
+        mkdir source
+        /usr/bin/tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --buildtype release \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_doc=false
+        meson install -C build
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: naev-win64-${{ github.sha }}
-        path: ${{ github.workspace }}/src/naev.exe
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
 
   "macOS":
+    needs: dist
     runs-on: macos-latest
 
     steps:
@@ -96,13 +144,10 @@ jobs:
     - name: Install Additional Build Dependencies
       run: |
         brew install \
-          automake \
-          autoconf-archive \
           pkg-config \
           fontconfig \
           luajit \
           intltool \
-          itstool \
           sdl2 \
           sdl2_mixer \
           sdl2_image \
@@ -111,35 +156,86 @@ jobs:
     - name: Remove Homebrew Perl
       run: |
         brew uninstall --ignore-dependencies perl
-        
-    - name: Checkout Naev Repository 
-      uses: actions/checkout@v2
-
-    - name: Test-Build Naev on MacOS
+      
+    - name: PKGCONFIG
       run: |
         # PKGCONFIG configuration for OpenAL
         export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openal-soft/lib/pkgconfig"
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
         
-        ./autogen.sh
-        ./configure
-        make -j$(sysctl -n hw.logicalcpu)
-      env:
-        CFLAGS: "-O3 -mmacosx-version-min=10.7"
-    
-    - name: Build MacOS Bundle
-      run: ./extras/macos/bundle.sh
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --buildtype release \
+            --prefix="${{ github.workspace }}/dist/naev.app" \
+            --bindir=Contents/MacOS \
+            --datadir=Contents/Resources \
+            -Dconfigure_doc=false
+        meson install -C build
     
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
         name: naev-macos-${{ github.sha }}
-        path: ${{ github.workspace }}/Naev.app/ 
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
 
-  "Lua-Documentation":
+  "Documentation":
     runs-on: ubuntu-latest
-    needs: [Windows-MinGW64, macOS, Linux-x86_64]
+    needs: dist
 
     steps:
+    - name: Update APT Cache
+      run: |
+        sudo apt-get update
+
+    - name: Install Additional Build Dependencies
+      run: |
+        sudo apt-get install \
+          lua-ldoc \
+          graphviz \
+          doxygen
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_build=false
+        meson install -C build
+    
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2.0.3
       with:
@@ -148,51 +244,13 @@ jobs:
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
       if: ${{ github.event_name == 'push' && github.repository == 'naev/naev' }}
 
-    - name: Update APT Cache
-      run: |
-        sudo apt-get update
-
-    - name: Install Additional Build Dependencies
-      run: |
-        sudo apt-get install \
-          build-essential \
-          automake \
-          autoconf-archive \
-          libsdl2-dev \
-          libsdl2-mixer-dev \
-          libsdl2-image-dev \
-          libgl1-mesa-dev \
-          libxml2-dev \
-          libfontconfig1-dev \
-          libfreetype6-dev \
-          libpng-dev \
-          libopenal-dev \
-          libvorbis-dev \
-          binutils-dev \
-          libzip-dev \
-          libiberty-dev \
-          libluajit-5.1-dev \
-          lua-ldoc \
-          gettext \
-          autopoint \
-          intltool \
-          itstool
-
-    - name: Checkout Naev Repository 
-      uses: actions/checkout@v2
-
-    - name: Build Naev Lua Documentation
-      run: |
-        ./autogen.sh
-        ./configure
-        make -C docs lua
-    
     - name: Upload Lua Documentation
-      run: rsync -e "ssh -o 'StrictHostKeyChecking no'" -rv --delete docs/html/ travis@iandouglasscott.com:/srv/naevdoc
+      run: rsync -e "ssh -o 'StrictHostKeyChecking no'" -rv --delete dist/docs/lua/ travis@iandouglasscott.com:/srv/naevdoc
       if: ${{ github.event_name == 'push' && github.repository == 'naev/naev' }}
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: naev-luadocs-${{ github.sha }}
-        path: ${{ github.workspace }}/docs/html/
+        name: naev-docs-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
