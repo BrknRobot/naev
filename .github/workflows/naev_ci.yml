@@ -15,8 +15,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        sudo apt install python3-setuptools
+        sudo apt-get remove meson ninja-build
+        sudo apt-get install python3-setuptools
         pip3 install wheel meson ninja
 
     - name: Meson Build
@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update APT Build Dependencies
+    - name: Update apt-get Build Dependencies
       run: |
-        sudo apt update
-        sudo apt install \
+        sudo apt-get update
+        sudo apt-get install \
           build-essential \
           libsdl2-dev \
           libsdl2-mixer-dev \
@@ -62,8 +62,9 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        pip3 install wheel meson ninja
+        sudo apt-get remove meson ninja-build
+        pip3 install wheel
+        pip3 install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -107,7 +108,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        pip3 install wheel meson ninja
+        pip3 install wheel
+        pip3 install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -161,7 +163,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        pip3 install wheel meson ninja
+        pip3 install wheel
+        pip3 install meson ninja
         
     - name: Setup PKGCONFIG for Homebrew OpenAL
       run: |
@@ -200,13 +203,13 @@ jobs:
     needs: dist
 
     steps:
-    - name: Update APT Cache
+    - name: Update apt-get Cache
       run: |
-        sudo apt-get update
+        sudo apt-get-get update
 
     - name: Install Additional Build Dependencies
       run: |
-        sudo apt-get install \
+        sudo apt-get-get install \
           lua-ldoc \
           graphviz \
           doxygen \
@@ -214,7 +217,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        pip install wheel meson ninja
+        pip3 install wheel
+        pip3 install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
