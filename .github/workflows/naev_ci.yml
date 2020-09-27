@@ -13,15 +13,12 @@ jobs:
     - name: Checkout Naev Repository 
       uses: actions/checkout@v2
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        python3 -m pipx ensurepath
-
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        pipx install meson ninja
+        sudo apt install pipx
+        pipx install meson
+        pipx install ninja
 
     - name: Meson Build
       run: |
@@ -63,15 +60,12 @@ jobs:
           autopoint \
           intltool
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        python3 -m pipx ensurepath
-
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        pipx install meson ninja
+        sudo apt install pipx
+        pipx install meson
+        pipx install ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -111,7 +105,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
+        install: mingw-w64-x86_64-python mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
     - name: Install pipx
       run: |
@@ -120,7 +114,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        pipx install meson ninja
+        pipx install meson
+        pipx install ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -179,7 +174,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        pipx install meson ninja
+        pipx install meson
+        pipx install ninja
         
     - name: Setup PKGCONFIG for Homebrew OpenAL
       run: |
@@ -229,16 +225,13 @@ jobs:
           graphviz \
           doxygen
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        python3 -m pipx ensurepath
-
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        pipx install meson ninja
-        
+        sudo apt install pipx
+        pipx install meson
+        pipx install ninja
+
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
