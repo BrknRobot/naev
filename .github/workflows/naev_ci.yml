@@ -13,12 +13,16 @@ jobs:
     - name: Checkout Naev Repository 
       uses: actions/checkout@v2
 
+    - name: Install pipx
+      run: |
+        python3 -m pip install --user pipx
+        export PATH="/home/${USER}/.local/bin:$PATH"
+
     - name: Install meson and ninja
       run: |
-        sudo apt-get remove meson ninja-build
-        sudo apt-get install python3-setuptools
-        pip3 install wheel 
-        pip3 install meson ninja
+        sudo apt remove meson ninja-build
+        pipx install meson
+        pipx install ninja
 
     - name: Meson Build
       run: |
@@ -37,10 +41,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Update apt-get Build Dependencies
+    - name: Update APT Build Dependencies
       run: |
-        sudo apt-get update
-        sudo apt-get install \
+        sudo apt update
+        sudo apt install \
           build-essential \
           libsdl2-dev \
           libsdl2-mixer-dev \
@@ -56,16 +60,20 @@ jobs:
           libzip-dev \
           libiberty-dev \
           libluajit-5.1-dev \
-          python3-setuptools \
           gettext \
           autopoint \
           intltool
 
+    - name: Install pipx
+      run: |
+        pip3 install pipx
+
     - name: Install meson and ninja
       run: |
-        sudo apt-get remove meson ninja-build
-        pip3 install wheel
-        pip3 install meson ninja
+        export PATH="/home/${USER}/.local/bin:$PATH"
+        sudo apt remove meson ninja-build
+        pipx install meson
+        pipx install ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -79,6 +87,7 @@ jobs:
 
     - name: Meson Build
       run: |
+        export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/" \
@@ -107,10 +116,15 @@ jobs:
         update: true
         install: mingw-w64-x86_64-python mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
+    - name: Install pipx
+      run: |
+        pip3 install pipx
+
     - name: Install meson and ninja
       run: |
-        pip3 install wheel
-        pip3 install meson ninja
+        export PATH="/home/${USER}/.local/bin:$PATH"
+        pipx install meson
+        pipx install ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -124,6 +138,7 @@ jobs:
 
     - name: Meson Build
       run: |
+        export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/" \
@@ -162,10 +177,16 @@ jobs:
       run: |
         brew uninstall --ignore-dependencies perl
 
+    - name: Install pipx
+      run: |
+        brew install pipx
+        pipx ensurepath
+
     - name: Install meson and ninja
       run: |
-        pip3 install wheel
-        pip3 install meson ninja
+        
+        pipx install meson
+        pipx install ninja
         
     - name: Setup PKGCONFIG for Homebrew OpenAL
       run: |
@@ -204,23 +225,28 @@ jobs:
     needs: dist
 
     steps:
-    - name: Update apt-get Cache
+    - name: Update APT Cache
       run: |
-        sudo apt-get-get update
+        sudo apt-get update
 
     - name: Install Additional Build Dependencies
       run: |
-        sudo apt-get-get install \
+        sudo apt-get install \
           lua-ldoc \
           graphviz \
-          doxygen \
-          python3-setuptools
+          doxygen
+
+    - name: Install pipx
+      run: |
+        pip3 install pipx
 
     - name: Install meson and ninja
       run: |
-        pip3 install wheel
-        pip3 install meson ninja
-
+        export PATH="/home/${USER}/.local/bin:$PATH"
+        sudo apt remove meson ninja-build
+        pipx install meson
+        pipx install ninja
+        
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
@@ -233,6 +259,7 @@ jobs:
 
     - name: Meson Build
       run: |
+        export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --prefix="${{ github.workspace }}/dist/" \
             -Dconfigure_build=false
