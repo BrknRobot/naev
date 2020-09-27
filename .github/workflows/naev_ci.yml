@@ -10,20 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Setup Python
-      uses: actions/setup-python@v2
-
-    - name: Install Meson
-      run: |
-        pip install meson ninja
-
     - name: Checkout Naev Repository 
       uses: actions/checkout@v2
 
     - name: Meson Build
       run: |
-        meson setup builddir -Dconfigure_build=false -Dconfigure_doc=false
-        meson dist -C builddir --no-tests
+        ./meson.sh setup builddir -Dconfigure_build=false -Dconfigure_doc=false
+        ./meson.sh dist -C builddir --no-tests
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -60,13 +53,6 @@ jobs:
           autopoint \
           intltool
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-
-    - name: Install Meson
-      run: |
-        pip install meson ninja
-
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
@@ -79,11 +65,11 @@ jobs:
 
     - name: Meson Build
       run: |
-        meson setup build source \
+        ./meson.sh setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/" \
             -Dconfigure_doc=false
-        meson install -C build
+        ./meson install -C build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -105,7 +91,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-meson mingw-w64-x86_64-ninja mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
+        install: mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -115,15 +101,15 @@ jobs:
     - name: Extract Source
       run: |
         mkdir source
-        /usr/bin/tar -xf naev-*.tar.xz -C source --strip 1
+        tar -xf naev-*.tar.xz -C source --strip 1
 
     - name: Meson Build
       run: |
-        meson setup build source \
+        ./meson.sh setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/" \
             -Dconfigure_doc=false
-        meson install -C build
+        ./meson.sh install -C build
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -157,17 +143,10 @@ jobs:
       run: |
         brew uninstall --ignore-dependencies perl
       
-    - name: PKGCONFIG
+    - name: Setup PKGCONFIG for Homebrew OpenAL
       run: |
-        # PKGCONFIG configuration for OpenAL
+        # PKGCONFIG configuration for OpenAL (Shouldn't need this but meson can't seem to find the macOS bundled openal)
         export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openal-soft/lib/pkgconfig"
-
-    - name: Setup Python
-      uses: actions/setup-python@v2
-
-    - name: Install Meson
-      run: |
-        pip install meson ninja
         
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -181,13 +160,13 @@ jobs:
 
     - name: Meson Build
       run: |
-        meson setup build source \
+        ./meson.sh setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/naev.app" \
             --bindir=Contents/MacOS \
             --datadir=Contents/Resources \
             -Dconfigure_doc=false
-        meson install -C build
+        ./meson.sh install -C build
     
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -212,13 +191,6 @@ jobs:
           graphviz \
           doxygen
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-
-    - name: Install Meson
-      run: |
-        pip install meson ninja
-
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
@@ -231,10 +203,10 @@ jobs:
 
     - name: Meson Build
       run: |
-        meson setup build source \
+        ./meson.sh setup build source \
             --prefix="${{ github.workspace }}/dist/" \
             -Dconfigure_build=false
-        meson install -C build
+        ./meson.sh install -C build
     
     - name: Install SSH Key
       uses: shimataro/ssh-key-action@v2.0.3
@@ -254,3 +226,4 @@ jobs:
         name: naev-docs-${{ github.sha }}
         path: ${{ github.workspace }}/dist/*
         if-no-files-found: error
+        
