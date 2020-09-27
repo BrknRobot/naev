@@ -13,17 +13,9 @@ jobs:
     - name: Checkout Naev Repository 
       uses: actions/checkout@v2
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        export PATH="/home/${USER}/.local/bin:$PATH"
-
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        pipx install meson
-        pipx install ninja
-
+        python3 -m pip install meson ninja
     - name: Meson Build
       run: |
         meson setup builddir -Dconfigure_build=false -Dconfigure_doc=false
@@ -66,10 +58,7 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        sudo apt install pipx
-        pipx install meson
-        pipx install ninja
+        python3 -m pip install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -111,16 +100,9 @@ jobs:
         update: true
         install: mingw-w64-x86_64-python mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        export PATH="/home/${USER}/.local/bin:$PATH"
-
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        pipx install meson
-        pipx install ninja
+        python3 -m pip install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -230,17 +212,10 @@ jobs:
           graphviz \
           doxygen
 
-    - name: Install pipx
-      run: |
-        python3 -m pip install --user pipx
-        export PATH="/home/${USER}/.local/bin:$PATH"
-
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        pipx install meson
-        pipx install ninja
-        
+        python3 -m pip install meson ninja
+
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
