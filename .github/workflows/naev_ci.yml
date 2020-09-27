@@ -13,10 +13,14 @@ jobs:
     - name: Checkout Naev Repository 
       uses: actions/checkout@v2
 
+    - name: Install pipx
+      run: |
+        python3 -m pip install --user pipx
+        export PATH="/home/${USER}/.local/bin:$PATH"
+
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        sudo apt install pipx
         pipx install meson
         pipx install ninja
 
@@ -110,10 +114,11 @@ jobs:
     - name: Install pipx
       run: |
         python3 -m pip install --user pipx
-        python3 -m pipx ensurepath
+        export PATH="/home/${USER}/.local/bin:$PATH"
 
     - name: Install meson and ninja
       run: |
+        sudo apt remove meson ninja-build
         pipx install meson
         pipx install ninja
 
@@ -225,13 +230,17 @@ jobs:
           graphviz \
           doxygen
 
+    - name: Install pipx
+      run: |
+        python3 -m pip install --user pipx
+        export PATH="/home/${USER}/.local/bin:$PATH"
+
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        sudo apt install pipx
         pipx install meson
         pipx install ninja
-
+        
     - name: Get Source
       uses: actions/download-artifact@v2
       with:
