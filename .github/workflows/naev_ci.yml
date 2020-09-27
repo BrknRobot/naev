@@ -16,7 +16,8 @@ jobs:
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        python3 pip install meson ninja
+        sudo apt install python3-setuptools
+        python3 -m pip install meson ninja
 
     - name: Meson Build
       run: |
@@ -105,7 +106,7 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        python3 pip install meson ninja
+        python3 -m pip install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -218,7 +219,7 @@ jobs:
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        python3 pip install meson ninja
+        python3 -m pip install meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
