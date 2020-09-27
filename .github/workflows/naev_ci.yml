@@ -17,7 +17,7 @@ jobs:
       run: |
         sudo apt remove meson ninja-build
         sudo apt install python3-setuptools
-        python3 -m pip install meson ninja
+        pip3 install wheel meson ninja
 
     - name: Meson Build
       run: |
@@ -55,6 +55,7 @@ jobs:
           libzip-dev \
           libiberty-dev \
           libluajit-5.1-dev \
+          python3-setuptools \
           gettext \
           autopoint \
           intltool
@@ -62,7 +63,7 @@ jobs:
     - name: Install meson and ninja
       run: |
         sudo apt remove meson ninja-build
-        python3 pip install meson ninja
+        pip3 install wheel meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -106,7 +107,7 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        python3 -m pip install meson ninja
+        pip3 install wheel meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -158,15 +159,9 @@ jobs:
       run: |
         brew uninstall --ignore-dependencies perl
 
-    - name: Install pipx
-      run: |
-        brew install pipx
-        pipx ensurepath
-
     - name: Install meson and ninja
       run: |
-        pipx install meson
-        pipx install ninja
+        pip3 install wheel meson ninja
         
     - name: Setup PKGCONFIG for Homebrew OpenAL
       run: |
@@ -214,12 +209,12 @@ jobs:
         sudo apt-get install \
           lua-ldoc \
           graphviz \
-          doxygen
+          doxygen \
+          python3-setuptools
 
     - name: Install meson and ninja
       run: |
-        sudo apt remove meson ninja-build
-        python3 -m pip install meson ninja
+        pip install wheel meson ninja
 
     - name: Get Source
       uses: actions/download-artifact@v2
