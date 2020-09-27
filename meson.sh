@@ -1,5 +1,6 @@
 #!/bin/sh
 
+PYTHONBIN="/usr/bin/python3"
 BUILDDIR="builddir"
 MESONDIR="meson-bin"
 MESON="$MESONDIR/meson.py"
@@ -17,4 +18,4 @@ if [ ! -f "$MESON" ]; then
     rm $PACKAGE
 fi
 
-./meson-bin/meson.py $@
+$PYTHONBIN $MESON $@
