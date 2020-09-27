@@ -15,7 +15,8 @@ jobs:
 
     - name: Install pipx
       run: |
-        pip3 install --user pipx
+        sudo apt install python3-setuptools python3-venv
+        pip3 install pipx
         
     - name: Install meson and ninja
       run: |
@@ -63,7 +64,9 @@ jobs:
           libluajit-5.1-dev \
           gettext \
           autopoint \
-          intltool
+          intltool \
+          python3-setuptools \
+          python3-venv
 
     - name: Install pipx
       run: |
