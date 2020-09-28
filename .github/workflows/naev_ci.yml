@@ -118,7 +118,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-python mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
+        install: mingw-w64-x86_64-python mingw-w64-x86_64-python-pip mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-libxml2 mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-fontconfig git tar
 
     - name: Install pipx
       run: |
@@ -188,14 +188,8 @@ jobs:
 
     - name: Install meson and ninja
       run: |
-        
         pipx install meson
         pipx install ninja
-        
-    - name: Setup PKGCONFIG for Homebrew OpenAL
-      run: |
-        # PKGCONFIG configuration for OpenAL (Shouldn't need this but meson can't seem to find the macOS bundled openal)
-        export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openal-soft/lib/pkgconfig"
         
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -209,6 +203,9 @@ jobs:
 
     - name: Meson Build
       run: |
+        # PKGCONFIG configuration for OpenAL (Shouldn't need this but meson can't seem to find the macOS bundled openal)
+        export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openal-soft/lib/pkgconfig"
+        export PATH="/Users/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
             --prefix="${{ github.workspace }}/dist/naev.app" \
@@ -238,7 +235,9 @@ jobs:
         sudo apt-get install \
           lua-ldoc \
           graphviz \
-          doxygen
+          doxygen \
+          python3-setuptools \
+          python3-venv
 
     - name: Install pipx
       run: |
