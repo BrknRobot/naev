@@ -15,13 +15,13 @@ jobs:
 
     - name: Install pipx
       run: |
-        sudo apt install python3-setuptools python3-venv
+        sudo apt-get install python3-setuptools python3-venv
         pip3 install pipx
         
     - name: Install meson and ninja
       run: |
         export PATH="/home/${USER}/.local/bin:$PATH"
-        sudo apt remove meson ninja-build
+        sudo apt-get remove meson ninja-build
         pipx install meson
         pipx install ninja
 
@@ -45,8 +45,8 @@ jobs:
     steps:
     - name: Update APT Build Dependencies
       run: |
-        sudo apt update
-        sudo apt install \
+        sudo apt-get update
+        sudo apt-get install \
           build-essential \
           libsdl2-dev \
           libsdl2-mixer-dev \
@@ -75,7 +75,7 @@ jobs:
     - name: Install meson and ninja
       run: |
         export PATH="/home/${USER}/.local/bin:$PATH"
-        sudo apt remove meson ninja-build
+        sudo apt-get remove meson ninja-build
         pipx install meson
         pipx install ninja
 
