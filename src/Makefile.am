@@ -115,7 +115,6 @@ CODE_SOURCE = \
 	nlua_var.c \
 	nlua_vec2.c \
 	nmath.c \
-	nondata.c \
 	nopenal.c \
 	npng.c \
 	npc.c \
@@ -123,7 +122,6 @@ CODE_SOURCE = \
 	ntime.c \
 	nxml.c \
 	nxml_lua.c \
-	nzip.c \
 	opengl.c \
 	opengl_matrix.c \
 	opengl_render.c \
