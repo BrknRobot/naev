@@ -50,7 +50,7 @@ jobs:
       with:
         msystem: MINGW64
         update: true
-        install: mingw-w64-x86_64-python mingw-w64-x86_64-python-pip mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-fontconfig mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbismingw-w64-x86_64-libxml2 git tar
+        install: mingw-w64-x86_64-python mingw-w64-x86_64-python-pip mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-fontconfig mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbis mingw-w64-x86_64-libxml2 git tar
       if: ${{ matrix.os == 'windows-latest'}}
 
     - name: Get Source
