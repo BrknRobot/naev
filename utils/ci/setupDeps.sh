@@ -16,6 +16,9 @@ while getopts d:r: OPTION "$@"; do
     r)
         RUNNER=${OPTARG}
         ;;
+    j)
+        JOBNAME=${OPTARG}
+        ;;     
 
     esac
 done
@@ -52,6 +55,12 @@ if [[ $RUNNER == 'Linux' ]]; then
 
     # Install APT packages for Build Dependencies
     echo "Install APT packages for Build Dependencies"
+    if [[ $JOBNAME == 'docs' ]]; then
+    sudo apt-get install -y \
+          lua-ldoc \
+          graphviz \
+          doxygen
+    elif [[ $JOBNAME == 'ci' ]]; then
     sudo apt-get install -y \
         build-essential \
         libsdl2-dev \
@@ -74,7 +83,9 @@ if [[ $RUNNER == 'Linux' ]]; then
         lua-ldoc \
         graphviz \
         doxygen
-
+    else
+        echo "Nothing to install!"
+    fi
 elif [[ $RUNNER == 'macOS' ]]; then
     # Update APT Cache
     echo "Update Homebrew Cache"
