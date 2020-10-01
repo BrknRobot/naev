@@ -79,6 +79,9 @@ if [[ $RUNNER == 'ubuntu-latest' ]]; then
         gettext \
         autopoint \
         intltool \
+        lua-ldoc \
+        graphviz \
+        doxygen
 
 elif [[ $RUNNER == 'macos-latest' ]]; then
     # Update APT Cache
