@@ -121,7 +121,7 @@ elif [[ $RUNNER == 'macOS' ]]; then
     brew uninstall --ignore-dependencies perl
         
 elif [[ $RUNNER == 'Windows' ]]; then
-    pacman -S mingw-w64-x86_64-meson mingw-w64-x86_64-ninja
+    echo "Nothing to install!"
 else
     echo "Something went wrong setting up dependencies.."
     exit -1
