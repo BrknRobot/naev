@@ -45,7 +45,7 @@ jobs:
     defaults:
       run:
         shell: msys2 {0}
-    if: ${{ fromJson(matrix.os) == windows-latest }}
+    if: ${{ fromJson(jobs.ci.matrix.os) == windows-latest }}
 
     steps:
     - name: Setup Windows Build Environment
