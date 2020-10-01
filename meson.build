@@ -80,7 +80,6 @@ source = files(
    'src/nfile.c',
    'src/nlua.c',
    'src/nmath.c',
-   'src/nondata.c',
    'src/nopenal.c',
    'src/npc.c',
    'src/npng.c',
@@ -88,7 +87,6 @@ source = files(
    'src/ntime.c',
    'src/nxml.c',
    'src/nxml_lua.c',
-   'src/nzip.c',
    'src/opengl.c',
    'src/opengl_matrix.c',
    'src/opengl_render.c',
@@ -293,7 +291,6 @@ headers = files(
    'src/ntime.h',
    'src/nxml.h',
    'src/nxml_lua.h',
-   'src/nzip.h',
    'src/opengl.h',
    'src/opengl_matrix.h',
    'src/opengl_render.h',
@@ -537,9 +534,9 @@ if get_option('configure_build') == true
    )
 
    if host_machine.system() not in ['windows', 'cygwin', 'emscripten', 'android']
-      install_data('naev.appdata.xml', install_dir: get_option('datadir') / 'appdata')
+      install_data('naev.appdata.xml', install_dir: get_option('datadir') / 'metainfo')
       install_data('extras/logos/naev.png', install_dir: get_option('datadir') / 'icons/hicolor/256x256/apps')
-      install_data('naev.desktop', install_dir: get_option('datadir') / 'applications')
+      install_data('org.naev.desktop', install_dir: get_option('datadir') / 'applications')
       install_man('naev.6')
    endif
 
