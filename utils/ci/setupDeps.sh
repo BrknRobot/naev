@@ -56,33 +56,33 @@ if [[ $RUNNER == 'Linux' ]]; then
     # Install APT packages for Build Dependencies
     echo "Install APT packages for Build Dependencies"
     if [[ $JOBNAME == 'docs' ]]; then
-    sudo apt-get install -y \
-          lua-ldoc \
-          graphviz \
-          doxygen
+        sudo apt-get install -y \
+            lua-ldoc \
+            graphviz \
+            doxygen
     elif [[ $JOBNAME == 'ci' ]]; then
-    sudo apt-get install -y \
-        build-essential \
-        libsdl2-dev \
-        libsdl2-mixer-dev \
-        libsdl2-image-dev \
-        libgl1-mesa-dev \
-        libxml2-dev \
-        libfontconfig1-dev \
-        libfreetype6-dev \
-        libpng-dev \
-        libopenal-dev \
-        libvorbis-dev \
-        binutils-dev \
-        libzip-dev \
-        libiberty-dev \
-        libluajit-5.1-dev \
-        gettext \
-        autopoint \
-        intltool \
-        lua-ldoc \
-        graphviz \
-        doxygen
+        sudo apt-get install -y \
+            build-essential \
+            libsdl2-dev \
+            libsdl2-mixer-dev \
+            libsdl2-image-dev \
+            libgl1-mesa-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libopenal-dev \
+            libvorbis-dev \
+            binutils-dev \
+            libzip-dev \
+            libiberty-dev \
+            libluajit-5.1-dev \
+            gettext \
+            autopoint \
+            intltool \
+            lua-ldoc \
+            graphviz \
+            doxygen
     else
         echo "Nothing to install!"
     fi
