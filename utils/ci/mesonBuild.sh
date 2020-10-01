@@ -100,14 +100,12 @@ elif [[ $RUNNER == 'Windows' ]]; then
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"
-        export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup builddir -Dconfigure_build=false -Dconfigure_doc=false
         meson dist -C builddir --no-tests
 
     elif [[ $JOBNAME == 'ci' ]]; then
         # Build Naev
         echo "Build Naev on $RUNNER"
-        export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
             --prefix="$OUTPUT/" \

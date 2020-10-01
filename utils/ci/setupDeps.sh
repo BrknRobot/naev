@@ -121,16 +121,7 @@ elif [[ $RUNNER == 'macOS' ]]; then
     brew uninstall --ignore-dependencies perl
         
 elif [[ $RUNNER == 'Windows' ]]; then
-    # Install pipx
-    echo "Install pipx"
-    pip3 install pipx
-    export PATH="/home/${USER}/.local/bin:$PATH"
-
-    # Install meson and ninja via pipx
-    echo "Install meson and ninja via pipx"
-    pipx install meson
-    pipx install ninja
-
+    pacman -S mingw-w64-x86_64-meson mingw-w64-x86_64-ninja
 else
     echo "Something went wrong setting up dependencies.."
     exit -1
