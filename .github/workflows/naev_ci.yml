@@ -102,11 +102,11 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        ./utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
     
     - name: Build Naev
       run: |
-        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
@@ -143,11 +143,11 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        ./utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
     
     - name: Build Docs
       run: |
-        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
 
     - name: Upload Lua Documentation
       run: rsync -e "ssh -o 'StrictHostKeyChecking no'" -rv --delete dist/docs/lua/ travis@iandouglasscott.com:/srv/naevdoc
