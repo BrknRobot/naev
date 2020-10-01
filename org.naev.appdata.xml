@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
     <id>org.naev.desktop</id>
     <metadata_license>CC0-1.0</metadata_license>
@@ -8,49 +9,33 @@
     <summary>2D action/rpg space trading combat game</summary>
     <summary xml:lang="de">2D-Action- und RPG-Weltraumhandels- und Kampfspiel</summary>
     <description>
-     <p>
-      Naev is a 2D space trading and combat game, taking inspiration from the Escape Velocity series, among others.
-     </p>
-     <p xml:lang="de">
-      Naev ist ein 2D-Weltraumhandels- und -kampfspiel, welches Inspiration aus der „Escape Veolcity“-Serie und anderen Spielen nimmt.
-     </p>
+        <p>Naev is a 2D space trading and combat game, taking inspiration from the Escape Velocity series, among others.</p>
+        <p xml:lang="de">Naev ist ein 2D-Weltraumhandels- und -kampfspiel, welches Inspiration aus der „Escape Veolcity“-Serie und anderen Spielen nimmt.</p>
     </description>
     <screenshots>
-    <screenshot type="default">
-    <image>
-    https://naev.org/imgs/screenshots/fight2.png
-    </image>
-    <caption>Fight2</caption>
-    </screenshot>
-    <screenshot>
-        <image>
-        https://naev.org/imgs/screenshots/menu.png
-        </image>
-        <caption>Menu</caption>
-    </screenshot>
-    <screenshot>
-        <image>
-        https://naev.org/imgs/screenshots/map.png
-        </image>
-        <caption>Map</caption>
-    </screenshot>
-    <screenshot>
-        <image>
-        https://naev.org/imgs/screenshots/equip.png
-        </image>
-        <caption>Equip</caption>
-    </screenshot>
-    <screenshot>
-        <image>
-        https://naev.org/imgs/screenshots/jump.png
-        </image>
-        <caption>Jump</caption>
-    </screenshot>
-    <screenshot>
-        <image>
-        https://naev.org/imgs/screenshots/planet.png
-        </image>
-        <caption>Planet</caption>
-    </screenshot>
+        <screenshot type="default">
+            <image>https://naev.org/imgs/screenshots/fight2.png</image>
+            <caption>Fight2</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://naev.org/imgs/screenshots/menu.png</image>
+            <caption>Menu</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://naev.org/imgs/screenshots/map.png</image>
+            <caption>Map</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://naev.org/imgs/screenshots/equip.png</image>
+            <caption>Equip</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://naev.org/imgs/screenshots/jump.png</image>
+            <caption>Jump</caption>
+        </screenshot>
+        <screenshot>
+            <image>https://naev.org/imgs/screenshots/planet.png</image>
+            <caption>Planet</caption>
+        </screenshot>
     </screenshots>
 </component>
