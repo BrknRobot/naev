@@ -1,0 +1,257 @@
+on: [push, pull_request]
+
+name: CI
+
+env:
+  CC: clang
+
+jobs:
+  dist:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+
+    - name: Checkout Naev Repository 
+      uses: actions/checkout@v2
+
+    - name: Meson Build
+      run: |
+        meson setup builddir -Dconfigure_build=false -Dconfigure_doc=false
+        meson dist -C builddir --no-tests
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+        path: ${{ github.workspace }}/builddir/meson-dist/*
+        if-no-files-found: error
+
+  "Linux-x86_64":
+    needs: dist
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Update APT Build Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install \
+          build-essential \
+          libsdl2-dev \
+          libsdl2-mixer-dev \
+          libsdl2-image-dev \
+          libgl1-mesa-dev \
+          libxml2-dev \
+          libfontconfig1-dev \
+          libfreetype6-dev \
+          libpng-dev \
+          libopenal-dev \
+          libvorbis-dev \
+          binutils-dev \
+          libzip-dev \
+          libiberty-dev \
+          libluajit-5.1-dev \
+          gettext \
+          autopoint \
+          intltool
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --optimization 3 \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_doc=false
+        meson install -C build
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-lin64-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
+
+  "Windows-MinGW64":
+    needs: dist
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+    - name: Setup MINGW64 Environment
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: MINGW64
+        update: true
+        install: mingw-w64-x86_64-meson mingw-w64-x86_64-ninja mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-SDL2 mingw-w64-x86_64-libxml2 git tar
+
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        /usr/bin/tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --optimization 3 \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_doc=false
+        meson install -C build
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-win64-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
+
+  "macOS":
+    needs: dist
+    runs-on: macos-latest
+
+    steps:
+    - name: Update Homebrew Cache
+      run: |
+        brew update
+
+    - name: Install Additional Build Dependencies
+      run: |
+        brew install \
+          pkg-config \
+          fontconfig \
+          luajit \
+          intltool \
+          sdl2 \
+          sdl2_mixer \
+          sdl2_image \
+          openal-soft
+          
+    - name: Remove Homebrew Perl
+      run: |
+        brew uninstall --ignore-dependencies perl
+      
+    - name: PKGCONFIG
+      run: |
+        # PKGCONFIG configuration for OpenAL
+        export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openal-soft/lib/pkgconfig"
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+        
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --optimization 3 \
+            --prefix="${{ github.workspace }}/dist/naev.app" \
+            --bindir=Contents/MacOS \
+            --datadir=Contents/Resources \
+            -Dconfigure_doc=false
+        meson install -C build
+    
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-macos-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
+
+  "Documentation":
+    runs-on: ubuntu-latest
+    needs: dist
+
+    steps:
+    - name: Update APT Cache
+      run: |
+        sudo apt-get update
+
+    - name: Install Additional Build Dependencies
+      run: |
+        sudo apt-get install \
+          lua-ldoc \
+          graphviz \
+          doxygen
+
+    - name: Setup Python
+      uses: actions/setup-python@v2
+
+    - name: Install Meson
+      run: |
+        pip install meson ninja
+
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Meson Build
+      run: |
+        meson setup build source \
+            --prefix="${{ github.workspace }}/dist/" \
+            -Dconfigure_build=false
+        meson install -C build
+    
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2.0.3
+      with:
+        key: ${{ secrets.SSH_KEY }}
+        name: id_rsa # optional
+        known_hosts: ${{ secrets.KNOWN_HOSTS }}
+      if: ${{ github.event_name == 'push' && github.repository == 'naev/naev' }}
+
+    - name: Upload Lua Documentation
+      run: rsync -e "ssh -o 'StrictHostKeyChecking no'" -rv --delete dist/docs/lua/ travis@iandouglasscott.com:/srv/naevdoc
+      if: ${{ github.event_name == 'push' && github.repository == 'naev/naev' }}
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-docs-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
+        
