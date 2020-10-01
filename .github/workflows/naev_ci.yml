@@ -40,7 +40,6 @@ jobs:
 
     env:
       CC: clang
-      CC_LD: lld
       JOB: ci
       DISTOUT: ${{ github.workspace }}/dist
 
