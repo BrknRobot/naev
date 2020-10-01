@@ -69,7 +69,7 @@ jobs:
         path: ${{ github.workspace }}/dist/*
         if-no-files-found: error
 
-  ci_windows:
+  ci_windows-latest:
     needs: dist
     runs-on: windows-latest
 
