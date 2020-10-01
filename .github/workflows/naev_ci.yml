@@ -32,7 +32,7 @@ jobs:
   ci:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
 
     needs: dist
     runs-on: ${{ matrix.os }}
@@ -42,10 +42,44 @@ jobs:
       CC_LD: lld
       JOB: ci
 
+    steps:
+    - name: Get Source
+      uses: actions/download-artifact@v2
+      with:
+        name: naev-dist-${{ github.sha }}
+
+    - name: Extract Source
+      run: |
+        mkdir source
+        tar -xf naev-*.tar.xz -C source --strip 1
+
+    - name: Setup Build Environment
+      run: |
+        ./utils/ci/setupDeps.sh -r ${{ runner.os }}
+    
+    - name: Build Naev
+      run: |
+        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: naev-${{ runner.os }}-${{ github.sha }}
+        path: ${{ github.workspace }}/dist/*
+        if-no-files-found: error
+
+  ci_windows:
+    needs: dist
+    runs-on: windows-latest
+
+    env:
+      CC: clang
+      CC_LD: lld
+      JOB: ci
+
     defaults:
       run:
         shell: msys2 {0}
-    if: matrix.os == windows-latest
 
     steps:
     - name: Setup Windows Build Environment
@@ -54,7 +88,6 @@ jobs:
         msystem: MINGW64
         update: true
         install: mingw-w64-x86_64-python mingw-w64-x86_64-python-pip mingw-w64-x86_64-clang mingw-w64-x86_64-pkg-config mingw-w64-x86_64-freetype mingw-w64-x86_64-fontconfig mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_mixer mingw-w64-x86_64-SDL2_image mingw-w64-x86_64-openal mingw-w64-x86_64-libvorbismingw-w64-x86_64-libxml2 git tar
-      if: matrix.os == windows-latest
     
     - name: Get Source
       uses: actions/download-artifact@v2
@@ -77,7 +110,7 @@ jobs:
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: naev-${{ matrix.os }}-${{ github.sha }}
+        name: naev-${{ runner.os }}-${{ github.sha }}
         path: ${{ github.workspace }}/dist/*
         if-no-files-found: error
 
