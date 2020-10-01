@@ -32,14 +32,14 @@ while getopts d:r:j: OPTION "$@"; do
 done
 
 if [[ -z "$RUNNER" ]]; then
-    echo "usage: `basename $0` [-d] -r <RUNNERENV> -j <JOB>"
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
     exit 2
 elif [[ -z "$JOBNAME" ]]; then
-    echo "usage: `basename $0` [-d] -r <RUNNERENV> -j <JOB>"
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
     exit 2
 fi
 
-if [[ $RUNNER == 'ubuntu-latest' ]]; then
+if [[ $RUNNER == 'Linux' ]]; then
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"
@@ -70,7 +70,7 @@ if [[ $RUNNER == 'ubuntu-latest' ]]; then
         echo "Something went wrong figuring out what we are building.. Check the log.."
         exit -1
     fi
-elif [[ $RUNNER == 'macos-latest' ]]; then
+elif [[ $RUNNER == 'macOS' ]]; then
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"
@@ -98,7 +98,7 @@ elif [[ $RUNNER == 'macos-latest' ]]; then
         echo "Something went wrong figuring out what we are building.. Check the log.."
         exit -1
     fi 
-elif [[ $RUNNER == 'windows-latest' ]]; then
+elif [[ $RUNNER == 'Windows' ]]; then
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"

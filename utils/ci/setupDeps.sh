@@ -29,11 +29,11 @@ while getopts d:r: OPTION "$@"; do
 done
 
 if [[ -z "$RUNNER" ]]; then
-    echo "usage: `basename $0` [-d] -r <RUNNERENV>"
+    echo "usage: `basename $0` [-d] -r <runner.os>"
     exit 2
 fi
 
-if [[ $RUNNER == 'ubuntu-latest' ]]; then
+if [[ $RUNNER == 'Linux' ]]; then
     # Update APT Cache
     echo "Update APT Cache"
     sudo apt-get update
@@ -83,7 +83,7 @@ if [[ $RUNNER == 'ubuntu-latest' ]]; then
         graphviz \
         doxygen
 
-elif [[ $RUNNER == 'macos-latest' ]]; then
+elif [[ $RUNNER == 'macOS' ]]; then
     # Update APT Cache
     echo "Update Homebrew Cache"
     brew update
@@ -114,7 +114,7 @@ elif [[ $RUNNER == 'macos-latest' ]]; then
     echo "Remove Homebrew Perl"
     brew uninstall --ignore-dependencies perl
         
-elif [[ $RUNNER == 'windows-latest' ]]; then
+elif [[ $RUNNER == 'Windows' ]]; then
     # Install pipx
     echo "Install pipx"
     pip3 install pipx
