@@ -365,12 +365,12 @@ if get_option('configure_build') == true
       'VMAJOR'         : meson.project_version().split('.')[0],
       'VMINOR'         : meson.project_version().split('.')[1],
       'VREV'           : meson.project_version().split('.')[2],
-      'HOST'           : '"' + host_machine.system() + '-' + host_machine.cpu_family() + '"',
+      'HOST'           : '"' + host_machine.system() + '-' + target_machine.cpu_family() + '"',
       'DEBUG'          : get_option('debug')    ? 1 : false,
       'DEBUGGING'      : get_option('debug')    ? 1 : false,
       'DEBUG_PARANOID' : get_option('paranoid') ? 1 : false,
-      'PACKAGE'        : meson.project_name(),
-      'PACKAGE_VERSION': meson.project_version(),
+      'PACKAGE'        : '"' + meson.project_name() + '"',
+      'PACKAGE_VERSION': '"' + meson.project_version() + '"',
       'NDATA_DEF'      : '"' + (get_option('prefix') / ndata_path) + '"'
    })
 
@@ -537,9 +537,9 @@ if get_option('configure_build') == true
    )
 
    if host_machine.system() not in ['windows', 'cygwin', 'emscripten', 'android']
-      install_data('naev.appdata.xml', install_dir: get_option('datadir') / 'appdata/naev')
+      install_data('naev.appdata.xml', install_dir: get_option('datadir') / 'appdata')
       install_data('extras/logos/naev.png', install_dir: get_option('datadir') / 'icons/hicolor/256x256/apps')
-      install_data('naev.desktop', install_dir: get_option('datadir') / 'applications/naev')
+      install_data('naev.desktop', install_dir: get_option('datadir') / 'applications')
       install_man('naev.6')
    endif
 
