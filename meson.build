@@ -356,6 +356,11 @@ headers = files(
 ####
 if get_option('configure_build') == true
 
+   ndata_path = get_option('ndata_path')
+   if ndata_path == ''
+      ndata_path = get_option('datadir') / 'naev/ndata'
+   endif
+
    config_data = configuration_data({
       'VMAJOR'         : meson.project_version().split('.')[0],
       'VMINOR'         : meson.project_version().split('.')[1],
@@ -365,7 +370,8 @@ if get_option('configure_build') == true
       'DEBUGGING'      : get_option('debug')    ? 1 : false,
       'DEBUG_PARANOID' : get_option('paranoid') ? 1 : false,
       'PACKAGE'        : meson.project_name(),
-      'PACKAGE_VERSION': meson.project_version()
+      'PACKAGE_VERSION': meson.project_version(),
+      'NDATA_DEF'      : '"' + (get_option('prefix') / ndata_path) + '"'
    })
 
    add_project_arguments('-include', 'config.h', language: 'c')
@@ -429,7 +435,7 @@ if get_option('configure_build') == true
    else
       bfd = dependency('', required: false)
    endif
-   
+
    system_deps += bfd
    config_data.set10('HAS_BFD', bfd.found())
 
@@ -516,7 +522,19 @@ if get_option('configure_build') == true
       install_dir: get_option('datadir') / 'naev'
    )
 
-   install_subdir('dat', install_dir: get_option('datadir') / 'naev')
+   install_subdir(
+      'dat',
+      install_dir: ndata_path,
+   )
+
+   custom_target(
+      'version',
+      output: 'VERSION',
+      command: ['echo', meson.project_version()],
+      capture: true,
+      install: true,
+      install_dir: ndata_path
+   )
 
    if host_machine.system() not in ['windows', 'cygwin', 'emscripten', 'android']
       install_data('naev.appdata.xml', install_dir: get_option('datadir') / 'appdata/naev')
@@ -527,3 +545,21 @@ if get_option('configure_build') == true
 endif
 
 subdir('docs')
+
+####
+# Soundtrack
+####
+soundtrackpy = find_program('utils/soundtrack.py')
+custom_target(
+   'soundtrack',
+   command: [
+      soundtrackpy,
+      '--csv', 'yes',
+      '--source-dir', meson.source_root(),
+      '--output', '@OUTPUT0@'
+   ],
+   output: [
+      'naev-' + meson.project_version() + '-soundtrack.zip',
+      'naev-' + meson.project_version() + '-soundtrack.csv'
+   ]
+)
