@@ -96,7 +96,7 @@ elif [[ $RUNNER == 'macOS' ]]; then
         echo "Something went wrong figuring out what we are building.. Check the log.."
         exit -1
     fi 
-elif [[ $RUNNER == 'Windows' ]]; then/
+elif [[ $RUNNER == 'Windows' ]]; then
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"
