@@ -8,7 +8,7 @@
 
 set -e
 
-while getopts d:r:j: OPTION "$@"; do
+while getopts d:r:j:o: OPTION "$@"; do
     case $OPTION in
     d)
         set -x
@@ -19,15 +19,21 @@ while getopts d:r:j: OPTION "$@"; do
     j)
         JOBNAME=${OPTARG}
         ;;
+    o)
+        OUTPUT=${OPTARG}
+        ;;
 
     esac
 done
 
 if [[ -z "$RUNNER" ]]; then
-    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB> -o <OUTPUT>"
     exit 2
 elif [[ -z "$JOBNAME" ]]; then
-    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB> -o <OUTPUT>"
+    exit 2
+elif [[ -z "$OUTPUT/" ]]; then
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB> -o <OUTPUT>"
     exit 2
 fi
 
@@ -45,7 +51,7 @@ if [[ $RUNNER == 'Linux' ]]; then
         export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
-            --prefix="${{ github.workspace }}/dist/" \
+            --prefix="$OUTPUT/" \
             -Dconfigure_doc=false
         meson install -C build
 
@@ -54,7 +60,7 @@ if [[ $RUNNER == 'Linux' ]]; then
         echo "Build Naev docs on $RUNNER"
         export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
-            --prefix="${{ github.workspace }}/dist/" \
+            --prefix="$OUTPUT/" \
             -Dconfigure_build=false
         meson install -C build
 
@@ -80,7 +86,7 @@ elif [[ $RUNNER == 'macOS' ]]; then
         export PATH="/Users/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
-            --prefix="${{ github.workspace }}/dist/naev.app" \
+            --prefix="$OUTPUT/naev.app" \
             --bindir=Contents/MacOS \
             --datadir=Contents/Resources \
             -Dconfigure_doc=false
@@ -90,7 +96,7 @@ elif [[ $RUNNER == 'macOS' ]]; then
         echo "Something went wrong figuring out what we are building.. Check the log.."
         exit -1
     fi 
-elif [[ $RUNNER == 'Windows' ]]; then
+elif [[ $RUNNER == 'Windows' ]]; then/
     if [[ $JOBNAME == 'dist' ]]; then
         # Build dist source
         echo "Build dist source on $RUNNER"
@@ -104,7 +110,7 @@ elif [[ $RUNNER == 'Windows' ]]; then
         export PATH="/home/${USER}/.local/bin:$PATH"
         meson setup build source \
             --buildtype release \
-            --prefix="${{ github.workspace }}/dist/" \
+            --prefix="$OUTPUT/" \
             -Dconfigure_doc=false
         meson install -C build
 

@@ -16,11 +16,11 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        ./utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./utils/ci/setupDeps.sh -r ${{ runner.os }} -j $JOB
     
     - name: Build Dist
       run: |
-        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB -o $DISTOUT
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
@@ -52,7 +52,6 @@ jobs:
       run: |
         mkdir source
         tar -xf naev-*.tar.xz -C source --strip 1
-        mv source
 
     - name: Setup Build Environment
       run: |
@@ -60,7 +59,7 @@ jobs:
     
     - name: Build Naev
       run: |
-        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB -o $DISTOUT
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
@@ -77,6 +76,7 @@ jobs:
       CC: clang
       CC_LD: lld
       JOB: ci
+      DISTOUT: ${{ github.workspace }}/dist
 
     defaults:
       run:
@@ -106,7 +106,7 @@ jobs:
     
     - name: Build Naev
       run: |
-        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB -o $DISTOUT
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
@@ -147,7 +147,7 @@ jobs:
     
     - name: Build Docs
       run: |
-        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB -o $DISTOUT
 
     - name: Upload Lua Documentation
       run: rsync -e "ssh -o 'StrictHostKeyChecking no'" -rv --delete dist/docs/lua/ travis@iandouglasscott.com:/srv/naevdoc
