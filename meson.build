@@ -534,9 +534,9 @@ if get_option('configure_build') == true
    )
 
    if host_machine.system() not in ['windows', 'cygwin', 'emscripten', 'android']
-      install_data('org.naev.appdata.xml', install_dir: get_option('datadir') / 'metainfo')
+      install_data('org.naev.Naev.appdata.xml', install_dir: get_option('datadir') / 'metainfo')
       install_data('extras/logos/naev.png', install_dir: get_option('datadir') / 'icons/hicolor/256x256/apps')
-      install_data('org.naev.desktop', install_dir: get_option('datadir') / 'applications')
+      install_data('org.naev.Naev.desktop', install_dir: get_option('datadir') / 'applications')
       install_man('naev.6')
    endif
 
