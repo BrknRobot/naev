@@ -72,12 +72,12 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }} -j $JOB
       if: ${{ matrix.os != 'windows-latest'}}
 
     - name: Setup Build Environment (Windows)
       run: |
-        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }} -j $JOB
       shell: msys2 {0}
       if: ${{ matrix.os == 'windows-latest'}}
 
@@ -128,7 +128,7 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }} -j $JOB
     
     - name: Build Docs
       run: |
