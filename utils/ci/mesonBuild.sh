@@ -32,7 +32,7 @@ if [[ -z "$RUNNER" ]]; then
 elif [[ -z "$JOBNAME" ]]; then
     echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB> -o <OUTPUT>"
     exit 2
-elif [[ -z "$OUTPUT/" ]]; then
+elif [[ -z "$OUTPUT" ]]; then
     echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB> -o <OUTPUT>"
     exit 2
 fi

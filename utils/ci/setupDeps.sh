@@ -8,7 +8,7 @@
 
 set -e
 
-while getopts d:r: OPTION "$@"; do
+while getopts d:r:j: OPTION "$@"; do
     case $OPTION in
     d)
         set -x
@@ -24,7 +24,10 @@ while getopts d:r: OPTION "$@"; do
 done
 
 if [[ -z "$RUNNER" ]]; then
-    echo "usage: `basename $0` [-d] -r <runner.os>"
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
+    exit 2
+elif [[ -z "$JOBNAME" ]]; then
+    echo "usage: `basename $0` [-d] -r <runner.os> -j <JOB>"
     exit 2
 fi
 
