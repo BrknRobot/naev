@@ -3,18 +3,10 @@
 # TODO: Add error detection if APT/Homebrew/PIP fails to update or install packages 
 #
 # This script should be run before building, as it installs the build system, and all build dependencies
-# and should be run in the root naev directory.
 #
 # Checks if argument(s) are valid
 
 set -e
-
-# Check if we are running in the right place
-
-if [[ ! -f "naev.6" ]]; then
-    echo "Please run from Naev root directory."
-    exit 1
-fi
 
 while getopts d:r: OPTION "$@"; do
     case $OPTION in

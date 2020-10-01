@@ -3,18 +3,10 @@
 # TODO: Add addition al logging if build fails.
 #
 # This script should be run after dependencies are installed, as it depends on a working build system, and all build dependencies
-# and should be run in the root naev directory.
 #
 # Checks if argument(s) are valid
 
 set -e
-
-# Check if we are running in the right place
-
-if [[ ! -f "naev.6" ]]; then
-    echo "Please run from Naev root directory."
-    exit 1
-fi
 
 while getopts d:r:j: OPTION "$@"; do
     case $OPTION in

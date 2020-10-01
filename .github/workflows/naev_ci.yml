@@ -52,14 +52,15 @@ jobs:
       run: |
         mkdir source
         tar -xf naev-*.tar.xz -C source --strip 1
+        mv source
 
     - name: Setup Build Environment
       run: |
-        ./utils/ci/setupDeps.sh -r ${{ runner.os }}
+        ./source/utils/ci/setupDeps.sh -r ${{ runner.os }}
     
     - name: Build Naev
       run: |
-        ./utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
+        ./source/utils/ci/mesonBuild.sh -r ${{ runner.os }} -j $JOB
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v2
