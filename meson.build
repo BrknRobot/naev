@@ -41,6 +41,7 @@ source = files(
    'src/dev_uniedit.c',
    'src/dialogue.c',
    'src/economy.c',
+   'src/env.c',
    'src/equipment.c',
    'src/escort.c',
    'src/event.c',
@@ -539,6 +540,17 @@ if get_option('configure_build') == true
       install_data('org.naev.Naev.desktop', install_dir: get_option('datadir') / 'applications')
       install_man('naev.6')
    endif
+
+   ####
+   # Dist packages
+   ####
+
+   ## AppImage
+   buildAppImage = find_program('extras/appimage/buildAppImage.sh')
+   meson.add_install_script(
+      buildAppImage,
+      meson.project_version()
+   )
 
 endif
 
