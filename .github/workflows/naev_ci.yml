@@ -35,7 +35,7 @@ jobs:
 
   "Linux-x86_64":
     needs: "Package_Source"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     env:
       LIBGL_ALWAYS_SOFTWARE: true
 
